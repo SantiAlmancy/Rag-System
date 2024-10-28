@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from dataCleaning import *
 from dataPreparation import *
@@ -33,13 +34,29 @@ processor.add_step(htmlTagsRemoval)
 processor.add_step(lambda text: specialCharactersRemoval(text, specialCharactersToRemove))
 processor.add_step(multipleSpacesRemoval)
 
-def process_text(text):
+def processText(text):
     # Process the input text through the defined steps.
     return processor.process(text)
 
-def preprocess_text_column(df, text_column):
-    # Apply preprocessing to the specified text column.
-    if text_column in df.columns:
-        df['processed_text'] = df[text_column].apply(process_text)
-    else:
-        print(f"Column '{text_column}' not found in DataFrame.")
+def preprocessColumns(df, columns):
+    for column in columns:
+        if column in df.columns:
+            df[column] = df[column].apply(processText)
+    return df
+
+def main():
+    # Load the CSV file
+    load_dotenv() 
+    DATA_PATH = os.getenv("DATA_PATH")
+    df = pd.read_csv(DATA_PATH)
+    
+    # Specify the text column to preprocess
+    columnsToPreprocess  = ['Name', 'Text']
+    preprocessColumns(df, columnsToPreprocess )
+    
+    # Display the full text of the first three entries in the "text" column
+    for i, text in enumerate(df['Text'].head(3), start=1):
+        print(f"Text entry {i}:\n{text}\n{'-'*40}\n")
+
+if __name__ == "__main__":
+    main()
