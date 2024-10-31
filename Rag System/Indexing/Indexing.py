@@ -38,6 +38,26 @@ def main():
     # Create embeddings for all chunks and store in FAISS vectorstore
     split_texts_embeddings = [(text, embed_model.embed_query(text)) for text in split_texts]
     
+    # Create vectorstore with (text, embedding) pairs
+    vectorstore = FAISS.from_embeddings(split_texts_embeddings, embedding=embed_model)
+
+    # Create a retriever
+    retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
+
+    # Save retriever to a file at specified path
+    RETRIEVER_PATH = os.getenv("RETRIEVER_PATH")
+    with open(RETRIEVER_PATH, "wb") as f:
+        pickle.dump(retriever, f)
+    print(f"Retriever saved to {RETRIEVER_PATH}")
+
+    # Perform a search for relevant documents
+    query = "How does the unveiling of the Mercedes-AMG F1 W09 EQ Power+ reflect the evolution of hybrid technology in Formula One and its impact on the future of high-performance models from Mercedes-AMG?"
+    docs = retriever.get_relevant_documents(query)
+
+    # Print retrieved documents
+    for doc in docs:
+        print("Retrieved Document:")
+        print(f"Text: {doc.page_content}\n")
 
 if __name__ == "__main__":
     main()
