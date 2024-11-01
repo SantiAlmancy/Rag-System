@@ -42,7 +42,10 @@ def generateQuestionVariations(client, question):
 
     # Join all response parts into a single string and print the final response
     fullResponse = "".join(responseParts)
-    return fullResponse
+
+    # Split the response into a list of questions by line breaks and remove empty lines
+    questionList = [q.strip() for q in fullResponse.splitlines() if q.strip()]
+    return questionList
 
 # Example of usage
 # Define the question to be rephrased
