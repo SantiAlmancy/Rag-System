@@ -5,7 +5,7 @@ def loadTopics(topicsPath):
     df = pd.read_csv(topicsPath)
     return df["Name"].tolist()  # Return list of topics
 
-def canAnswerWithVectorStoreUsingModel(client, query, topics):
+def canAnswerWithVectorStore(client, query, topics):
     # Prompt for the model
     messages = [
         {
@@ -32,4 +32,5 @@ def canAnswerWithVectorStoreUsingModel(client, query, topics):
     for chunk in response:
         answer += chunk.choices[0].delta.content
 
-    return answer.strip().lower() == 'yes'  # True if the model says 'yes'
+    normalized_answer = answer.strip().lower()
+    return normalized_answer.startswith('yes') # True if the model says 'yes'
