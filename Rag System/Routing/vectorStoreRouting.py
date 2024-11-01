@@ -1,32 +1,35 @@
-import os
-import pickle
-from dotenv import load_dotenv
-from sentence_transformers import SentenceTransformer, util
-from huggingface_hub import InferenceClient
+import pandas as pd
 
-# Load environment variables
-load_dotenv()
-RETRIEVER_PATH = os.getenv("RETRIEVER_PATH")
-API_TOKEN = os.getenv("API_TOKEN")
+def loadTopics(topicsPath):
+    # Load topics from CSV
+    df = pd.read_csv(topicsPath)
+    return df["Name"].tolist()  # Return list of topics
 
-# Initialize embedding model
-model = SentenceTransformer("hkunlp/instructor-base")
+def canAnswerWithVectorStoreUsingModel(client, query, topics):
+    # Prepare the prompt for the model
+    messages = [
+        {
+            "role": "user",
+            "content": f"""
+            You are an AI tasked with determining if a set of topics provides enough context to answer a question.
+            Topics include: {', '.join(topics)}.
+            Can you answer the question based on these topics? Respond with "yes" or "no" only.
+            Additionally, respond "yes" if the question is about the history or curiosities of Formula 1 vehicles from 2000 onwards.
+            Question: "{query}"
+            """
+        }
+    ]
 
-# Initialize InferenceClient with authentication token
-client = InferenceClient(api_key=API_TOKEN)
+    response = client.chat.completions.create(
+        model="meta-llama/Llama-3.2-3B-Instruct",
+        messages=messages,
+        max_tokens=10,
+        stream=True
+    )
 
-# Step 1: Load retriever from file
-def load_retriever():
-    with open(RETRIEVER_PATH, "rb") as f:
-        return pickle.load(f)
+    # Get response content
+    answer = ""
+    for chunk in response:
+        answer += chunk.choices[0].delta.content
 
-# Step 2: Check cosine similarity in vector store
-def search_vector_store(query, retriever, threshold=0.95):
-    docs = retriever.get_relevant_documents(query)
-    if docs:
-        query_emb = model.encode(query, convert_to_tensor=True)
-        doc_emb = model.encode(docs[0].page_content, convert_to_tensor=True)
-        cosine_similarity = util.cos_sim(query_emb, doc_emb).item()
-        print(cosine_similarity)
-        return cosine_similarity >= threshold
-    return False
+    return answer.strip().lower() == 'yes'  # Return True if the model says 'yes'
