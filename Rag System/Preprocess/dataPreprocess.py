@@ -58,5 +58,10 @@ def main():
     for i, text in enumerate(df['Text'].head(3), start=1):
         print(f"Text entry {i}:\n{text}\n{'-'*40}\n")
 
+    # Save the processed DataFrame to a new CSV file
+    PROCESSED_DATA_PATH = os.getenv("PROCESSED_DATA_PATH")
+    df.to_csv(PROCESSED_DATA_PATH, index=False)
+    print(f"Processed data saved to {PROCESSED_DATA_PATH}")
+
 if __name__ == "__main__":
     main()
