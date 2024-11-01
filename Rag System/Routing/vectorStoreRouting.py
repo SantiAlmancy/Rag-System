@@ -12,16 +12,15 @@ def canAnswerWithVectorStore(client, query, topics):
             "role": "user",
             "content": f"""
             You are an AI tasked with determining if a set of topics provides enough context to answer a question.
-            Topics include: {', '.join(topics)}.
-            Can you answer the question based on these topics? Respond with "yes" or "no" only.
-            Additionally, respond "yes" if the question is about the history or curiosities of Formula 1 vehicles from 2000 onwards.
+            Focus exclusively on the following vehicle-related topics: {', '.join(topics)}.
+            Can you answer the question based on these topics? Respond with "yes" if the question is specifically about Formula 1 vehicles, including their specifications, history, or curiosities from 2000 onwards. Respond with "no" if it relates to drivers or any other non-vehicle topics.
             Question: "{query}"
             """
         }
     ]
 
     response = client.chat.completions.create(
-        model="meta-llama/Llama-3.2-3B-Instruct",
+        model="mistralai/Mistral-7B-Instruct-v0.3",
         messages=messages,
         max_tokens=5,
         stream=True

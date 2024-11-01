@@ -1,14 +1,23 @@
+import os
+
 def canAnswerWithGraph(client, query):
-    # Fixed topics
-    topics = ["Formula 1 drivers", "Formula 1 driver standings", "Formula 1 circuits", "Formula 1 races"]
+    # Load the ontology from the .ttl file specified in the environment variable
+    ttl_file_path = os.getenv("K_GRAPH_ONTOLOGY")
     
-    # Prompt for the model
+    # Read the contents of the .ttl file
+    with open(ttl_file_path, 'r', encoding='utf-8') as file:
+        ttl_content = file.read()
+
+    print(ttl_content)
+    
+    # Prompt for the model using the ttl content
     messages = [
         {
             "role": "user",
             "content": f"""
             You are an AI tasked with determining if a graph can provide enough information to answer a question.
-            Topics include: {', '.join(topics)}.
+            The graph contains the following ontology information:
+            {ttl_content}
             Can you answer the question based on the graph? Respond with "yes" or "no" only.
             Question: "{query}"
             """
@@ -16,7 +25,7 @@ def canAnswerWithGraph(client, query):
     ]
 
     response = client.chat.completions.create(
-        model="meta-llama/Llama-3.2-3B-Instruct",
+        model="mistralai/Mistral-7B-Instruct-v0.3",
         messages=messages,
         max_tokens=5,
         stream=True
@@ -28,4 +37,4 @@ def canAnswerWithGraph(client, query):
         answer += chunk.choices[0].delta.content
 
     normalized_answer = answer.strip().lower()
-    return normalized_answer.startswith('yes') # True if the model says 'yes'
+    return normalized_answer.startswith('yes')  # True if the model says 'yes'
