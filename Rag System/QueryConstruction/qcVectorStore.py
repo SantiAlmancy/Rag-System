@@ -19,7 +19,7 @@ def generateQuestionVariations(client, question):
             "content": f"""You are an AI language model assistant tasked with generating informative queries for a vector search engine.
             The user has a question: "{question}"
             Your goal is to create three simple variations of this question that capture different aspects of the user's intent. These variations will help the search engine retrieve relevant documents even if they don't use the exact keywords as the original question.
-            Provide only these alternative questions as a result, each on a new line.
+            Provide only these alternative questions as output without any enumeration or listing symbols, just present each one on a new line.
             Original question: {question}""" 
         }
     ]
@@ -27,8 +27,8 @@ def generateQuestionVariations(client, question):
     # Send a chat completion request to the model, setting parameters like max tokens and streaming response
     stream = client.chat.completions.create(
         # Specify the model to use; this line can be adjusted to test different models
-        model="meta-llama/Llama-3.2-3B-Instruct", 
-        #model="mistralai/Mistral-7B-Instruct-v0.3",
+        #model="mistralai/Mixtral-8x7B-Instruct-v0.1", 
+        model="meta-llama/Llama-3.2-3B-Instruct",
         messages=messages, 
         max_tokens=350,
         stream=True
@@ -50,5 +50,5 @@ def generateQuestionVariations(client, question):
 # Example of usage
 # Define the question to be rephrased
 client = initializeModelAPI()
-question = "How does the 2021 Williams FW43B reflect the team's history and future ambitions in Formula 1?"
+question = "What makes the Renault R25 a classic in F1 history, and how did it help establish Fernando Alonso’s career?"
 print(generateQuestionVariations(client, question))
