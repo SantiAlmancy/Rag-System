@@ -1,20 +1,15 @@
-import pandas as pd
-
-def loadTopics(topicsPath):
-    # Topics from CSV
-    df = pd.read_csv(topicsPath)
-    return df["Name"].tolist()  # Return list of topics
-
-def canAnswerWithVectorStoreUsingModel(client, query, topics):
+def canAnswerWithGraphUsingModel(client, query):
+    # Fixed topics
+    topics = ["Formula 1 drivers", "Formula 1 driver standings", "Formula 1 circuits", "Formula 1 races"]
+    
     # Prompt for the model
     messages = [
         {
             "role": "user",
             "content": f"""
-            You are an AI tasked with determining if a set of topics provides enough context to answer a question.
+            You are an AI tasked with determining if a graph can provide enough information to answer a question.
             Topics include: {', '.join(topics)}.
-            Can you answer the question based on these topics? Respond with "yes" or "no" only.
-            Additionally, respond "yes" if the question is about the history or curiosities of Formula 1 vehicles from 2000 onwards.
+            Can you answer the question based on the graph? Respond with "yes" or "no" only.
             Question: "{query}"
             """
         }
