@@ -1,9 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+from dotenv import load_dotenv
+import os
 
-# Read URLs from a .txt file
-with open('urls.txt', 'r') as file:
+# Load environment variables
+load_dotenv()
+
+# Read the file path from the environment variable
+file_path = os.getenv('URLS_FILE_PATH')
+
+# Read URLs from the specified .txt file
+with open(file_path, 'r') as file:
     urls = file.read().splitlines()  # Read all lines and strip newline characters
 
 # Initialize an empty DataFrame with Name and Text columns
