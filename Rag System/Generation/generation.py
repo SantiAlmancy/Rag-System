@@ -20,7 +20,7 @@ def generateResponseVectorStore(client, context, question):
             give a comprehensive answer to the question.
             Respond only to the question asked, response should be relevant to the question.
             Provide the number of the source document when relevant.
-            If the answer cannot be deduced from the context, do not give an answer."""
+            If the answer cannot be deduced from the context, answer with 'I don't know'"""
         },
         {
             "role": "user",
@@ -52,6 +52,7 @@ def generateResponseVectorStore(client, context, question):
 # Define the question to be rephrased
 client = initializeModelAPI()
 question = "What were the design inspirations behind the Williams Mercedes FW43B's new livery in 2021?"
+#question = "What is the capital of France?"
 context = """Williams Racing proudly launches its 2021 Formula One challenger, the Williams Mercedes FW43B, featuring a striking new livery for the season ahead. The team’s new look captures the spirit of the team’s past, the present transformation and its drive to future ambitions as it heads into its first full season of ownership under US based Investment company, Dorilton Capital.
 Whilst evolutionary on the technical side due to the regulations, hence the designation FW43B as opposed to the FW44, the 2021 car will race with a dramatic new visual identity sporting a livery inspired by Williams’ all-conquering cars of the 1980s and 1990s, combining blues, white and yellow accents.
 
