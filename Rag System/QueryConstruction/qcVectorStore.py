@@ -19,7 +19,7 @@ def generateQuestionVariations(client, question):
     stream = client.chat.completions.create(
         # Specify the model to use; this line can be adjusted to test different models
         #model="mistralai/Mixtral-8x7B-Instruct-v0.1", 
-        model="meta-llama/Llama-3.2-3B-Instruct",
+        model="mistralai/Mixtral-8x7B-Instruct-v0.1",
         messages=messages, 
         max_tokens=350,
         stream=True

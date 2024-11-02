@@ -51,4 +51,3 @@ if __name__ == "__main__":
         # Use the new function to generate the answer
         result = generateAnswer(userQuery, embedModel, client, embedTopics)  # Pass the loaded topics
         print(f"Most common route: {result}")  # Print the most common route
-
