@@ -18,6 +18,14 @@ def main():
     # Initialize HuggingFace embedding model
     embed_model = HuggingFaceEmbeddings(model_name="hkunlp/instructor-base")
 
+    # Saving embedded topics
+    EMBEDDINGS_TOPICS = os.getenv("EMBEDDINGS_TOPICS")
+
+    name_embeddings = {name: embed_model.embed_query(name) for name in df['Name']}
+    with open(EMBEDDINGS_TOPICS, 'wb') as file:
+        pickle.dump(name_embeddings, file)
+    print(f"Embedded topics saved to {EMBEDDINGS_TOPICS}")
+    
     # Set chunk size and overlap
     chunk_size = 700        # Max characters per chunk
     chunk_overlap = 50      # Overlap between chunks
