@@ -1,15 +1,6 @@
-import os
-import pandas as pd
-from langchain.embeddings import HuggingFaceEmbeddings
 from scipy.spatial.distance import cosine
-from dotenv import load_dotenv
 from fuzzywuzzy import fuzz
-from huggingface_hub import InferenceClient
 import pickle
-
-def initializeInferenceClient(apiToken):
-    global client
-    client = InferenceClient(api_key=apiToken)
 
 # Load embeddings from the .pkl file
 def loadEmbeddings(embeddingsPath):
@@ -19,7 +10,7 @@ def loadEmbeddings(embeddingsPath):
 def getEmbedding(embedModel, text):
     return embedModel.embed_query(text)
 
-def isSpecificModelSimilar(embedModel, query, topics, threshold=0.8, fuzzThreshold=80):
+def isSpecificModelSimilar(embedModel, query, topics, threshold=0.8, fuzzThreshold=95):
     # Generate embedding for the query once
     queryEmbedding = getEmbedding(embedModel, query)
 
@@ -27,7 +18,7 @@ def isSpecificModelSimilar(embedModel, query, topics, threshold=0.8, fuzzThresho
         # Check approximate match with fuzzy score
         fuzzyScore = fuzz.partial_ratio(query.lower(), topic.lower())
         if fuzzyScore >= fuzzThreshold:
-            topicEmbedding = getEmbedding(topic)
+            topicEmbedding = getEmbedding(embedModel, topic)
             similarity = 1 - cosine(queryEmbedding, topicEmbedding)  # Cosine similarity
 
             if similarity >= threshold:
