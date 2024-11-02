@@ -39,7 +39,7 @@ def promptModelCheck(client, query, topics1, topics2, modelName="mistralai/Mixtr
             1. **Drivers** are key participants in F1 and their details (e.g., wins, personal information) are important.
             2. **Races** provide context about events and results, including specific wins and statistics.
             3. **Circuits** are venues where races occur and can influence results.
-            4. **Technology** are innovations from F1 teams to improve their vehicles.
+            4. **Technology** are innovations from F1 teams to improve their vehicles, includes vehicle component, mechanism and form improvements.
             5. Your understanding of these aspects should guide your assessment. 
             6. For each word in the question, determine if it pertains to a driver, race, circuit, or technology. If a relevant term is identified, analyze it in relation to the associated topics.
             Evaluate whether the question relates to the following options:
