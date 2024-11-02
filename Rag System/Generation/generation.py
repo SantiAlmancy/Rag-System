@@ -18,7 +18,7 @@ def generateResponseVectorStore(client, context, question):
             "role": "system",
             "content": """Using the information contained in the context,
             give a comprehensive answer to the question.
-            Respond only to the question asked, response should be be concise and relevant to the question.
+            Respond only to the question asked, response should be concise and relevant to the question.
             If the answer cannot be deduced from the context, answer with 'I don't know'"""
         },
         {
@@ -47,6 +47,15 @@ def generateResponseVectorStore(client, context, question):
 
     return answer
 
+def generateResponse(client, context, question, pathNumber):
+    response = ""
+    if pathNumber == 1:
+        response = generateResponseVectorStore(client, context, question)
+    elif pathNumber == 2:
+        response = "GraphQL"
+    return response
+
+
 # Example of usage
 # Define the question to be rephrased
 client = initializeModelAPI()
@@ -65,4 +74,4 @@ Williams brand, whilst still retaining the classic team spirit.
 Williams Racing proudly launches its 2021 Formula One challenger, the Williams Mercedes FW43B, featuring a striking new livery for the season ahead. The team’s new look captures the spirit of the team’s past, the present transformation and its drive to future ambitions as it heads into its first full season of ownership under US based Investment company, Dorilton Capital.
 Whilst evolutionary on the technical side due to the regulations, hence the designation FW43B as opposed to the FW44, the 2021 car will race with a dramatic new visual identity sporting a livery inspired by Williams’ all-conquering cars of the 1980s and 1990s, combining blues, white and yellow accents.
 """
-print(generateResponseVectorStore(client, context ,question))
+print(generateResponse(client, context ,question, 1))
