@@ -2,15 +2,6 @@ from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
 import os
 
-def initializeModelAPI():
-    # Load environment variables
-    load_dotenv()
-    apiToken = os.getenv("API_TOKEN")
-
-    # Initialize the client for Hugging Face Inference API with a specific API key
-    client = InferenceClient(api_key=apiToken)
-    return client
-
 def generateQuestionVariations(client, question):
     # Define the messages to send to the AI, including instructions and the user's question
     messages = [
@@ -46,9 +37,3 @@ def generateQuestionVariations(client, question):
     # Split the response into a list of questions by line breaks and remove empty lines
     questionList = [q.strip() for q in fullResponse.splitlines() if q.strip()]
     return questionList
-
-# Example of usage
-# Define the question to be rephrased
-client = initializeModelAPI()
-question = "What makes the Renault R25 a classic in F1 history, and how did it help establish Fernando Alonso’s career?"
-print(generateQuestionVariations(client, question))
