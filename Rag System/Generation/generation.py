@@ -18,7 +18,7 @@ def generateResponseVectorStore(client, context, question):
             "role": "system",
             "content": """Using the information contained in the context,
             give a comprehensive answer to the question.
-            Respond only to the question asked, response should be relevant to the question.
+            Respond only to the question asked, response should be be concise and relevant to the question.
             Provide the number of the source document when relevant.
             If the answer cannot be deduced from the context, answer with 'I don't know'"""
         },
