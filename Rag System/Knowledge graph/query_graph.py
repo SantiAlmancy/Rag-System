@@ -26,25 +26,27 @@ class F1QuerySystem:
         prompt = f"""You are a SPARQL query generator for a Formula 1 knowledge graph. The graph has the following structure:
 
 Circuits:
-- URI pattern: <http://example.org/f1/circuit/[name]>
-- Properties: schema1:country, schema1:latitude, schema1:longitude, schema1:location, schema1:name
 
+URI pattern: <http://example.org/f1/circuit/[name]>
+Properties: schema1:country, schema1:latitude, schema1:longitude, schema1:location, schema1:name
 Races:
-- URI pattern: <http://example.org/f1/race/[id]>
-- Properties: f1:hasCircuit, f1:round, f1:year, schema1:date, schema1:name
 
+URI pattern: <http://example.org/f1/race/[id]>
+Properties: f1:hasCircuit, f1:round, f1:year, schema1:date, schema1:name
 Drivers:
-- URI pattern: <http://example.org/f1/driver/[name]>
-- Properties: f1:code, f1:number, schema1:birthDate, schema1:nationality, foaf:familyName, foaf:givenName
 
+URI pattern: <http://example.org/f1/driver/[name]>
+Properties: f1:code, f1:number, schema1:birthDate, schema1:nationality, foaf:familyName, foaf:givenName
 Standings:
-- URI pattern: <http://example.org/f1/standing/[id]>
-- Properties: f1:hasDriver, f1:hasRace, f1:points, f1:position, f1:wins
 
+URI pattern: <http://example.org/f1/standing/[id]>
+Properties: f1:hasDriver, f1:hasRace, f1:points, f1:position, f1:wins
 Given this question: "{question}"
 Generate a SPARQL query that would answer this question using the knowledge graph structure above.
-Include only the SPARQL query in your response, with appropriate prefixes.
 
+***Include only the SPARQL query in your response, with appropriate prefixes.***
+
+****EXCLUDE any explanation or any other type of text***
 SPARQL Query:
 """
         try:
@@ -78,6 +80,7 @@ SPARQL Query:
         try:
             query = self.generateSPARQLQuery(question)
             print("\nGenerated SPARQL Query:")
+            query = self.clean_sparql_response(query)
             print(query)
             print("\nExecuting query...")
             
@@ -86,6 +89,24 @@ SPARQL Query:
         except Exception as e:
             print(f"Error processing question: {str(e)}")
             return None
+    def clean_sparql_response(self, sparql_string):
+        """Remove markdown code block markers and GPT end tokens from SPARQL query"""
+        # Split the string into lines
+        lines = sparql_string.split('\n')
+        
+        # Remove first line if it's a code block marker
+        if lines[0].startswith('```'):
+            lines = lines[1:]
+        
+        # Remove last line if it's a code block marker or GPT end token
+        if lines[-1].strip().endswith('</s>') or lines[-1].startswith('```'):
+            lines = lines[:-1]
+
+        if lines[-1].startswith('```'):
+            lines = lines[:-1]
+        
+        # Join the lines back together
+        return '\n'.join(lines)
 
 def query_f1_knowledge_graph(question):
     """Function to be called from outside with a question parameter"""
@@ -96,6 +117,7 @@ def query_f1_knowledge_graph(question):
     except Exception as e:
         print(f"Error: {str(e)}")
         return None
+
 
 if __name__ == "__main__":
     # This block will only run if the script is run directly
