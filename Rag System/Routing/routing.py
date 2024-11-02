@@ -5,44 +5,37 @@ from scipy.spatial.distance import cosine
 from dotenv import load_dotenv
 from fuzzywuzzy import fuzz
 from huggingface_hub import InferenceClient
+import pickle
 
-# Load environment variables
-load_dotenv()
-
-# Initialize the embedding model
-embed_model = HuggingFaceEmbeddings(model_name="hkunlp/instructor-base")
-client = None  # Will be initialized later
-
-def initialize_inference_client(api_token):
+def initializeInferenceClient(apiToken):
     global client
-    client = InferenceClient(api_key=api_token)
+    client = InferenceClient(api_key=apiToken)
 
-def load_topics(topics_path):
-    # Load car model names from a CSV file
-    df = pd.read_csv(topics_path)
-    return df["Name"].tolist()  # Return a list of model names
+# Load embeddings from the .pkl file
+def loadEmbeddings(embeddingsPath):
+    with open(embeddingsPath, "rb") as file:
+        return pickle.load(file)
+    
+def getEmbedding(embedModel, text):
+    return embedModel.embed_query(text)
 
-def get_embedding(text):
-    # Generate embedding for the given text
-    return embed_model.embed_query(text)
-
-def is_specific_model_similar(query, topics, threshold=0.8, fuzz_threshold=80):
+def isSpecificModelSimilar(embedModel, query, topics, threshold=0.8, fuzzThreshold=80):
     # Generate embedding for the query once
-    query_embedding = get_embedding(query)
+    queryEmbedding = getEmbedding(embedModel, query)
 
     for topic in topics:
         # Check approximate match with fuzzy score
-        fuzzy_score = fuzz.partial_ratio(query.lower(), topic.lower())
-        if fuzzy_score >= fuzz_threshold:
-            topic_embedding = get_embedding(topic)
-            similarity = 1 - cosine(query_embedding, topic_embedding)  # Cosine similarity
+        fuzzyScore = fuzz.partial_ratio(query.lower(), topic.lower())
+        if fuzzyScore >= fuzzThreshold:
+            topicEmbedding = getEmbedding(topic)
+            similarity = 1 - cosine(queryEmbedding, topicEmbedding)  # Cosine similarity
 
             if similarity >= threshold:
                 return True  # High match found
 
     return False  # No relevant match found
 
-def prompt_model_check(query, topics_1, topics_2, model_name="mistralai/Mixtral-8x7B-Instruct-v0.1"):
+def promptModelCheck(client, query, topics1, topics2, modelName="mistralai/Mixtral-8x7B-Instruct-v0.1"):
     # Create a message to check if the question relates to the specified topics
     messages = [
         {
@@ -59,8 +52,8 @@ def prompt_model_check(query, topics_1, topics_2, model_name="mistralai/Mixtral-
             5. Your understanding of these aspects should guide your assessment. 
             6. For each word in the question, determine if it pertains to a driver, race, circuit, or technology. If a relevant term is identified, analyze it in relation to the associated topics.
             Evaluate whether the question relates to the following options:
-            - **Option 1**: {topics_1} (Data source only from 2000 and onwards, discard if it includes any other year)
-            - **Option 2**: {topics_2} (Data source only from 1950 and onwards, discard if it includes any other year)
+            - **Option 1**: {topics1} (Data source only from 2000 and onwards, discard if it includes any other year)
+            - **Option 2**: {topics2} (Data source only from 1950 and onwards, discard if it includes any other year)
 
             Please respond with:
             - "1" if the question relates to Option 1,
@@ -73,7 +66,7 @@ def prompt_model_check(query, topics_1, topics_2, model_name="mistralai/Mixtral-
     ]
 
     response = client.chat.completions.create(
-        model=model_name,
+        model=modelName,
         messages=messages,
         max_tokens=5,
         stream=True
@@ -83,26 +76,26 @@ def prompt_model_check(query, topics_1, topics_2, model_name="mistralai/Mixtral-
     for chunk in response:
         answer += chunk.choices[0].delta.content
 
-    normalized_answer = answer.strip().lower()
-    if "1" in normalized_answer:
+    normalizedAnswer = answer.strip().lower()
+    if "1" in normalizedAnswer:
         return 1  # Matches Option 1
-    elif "2" in normalized_answer:
+    elif "2" in normalizedAnswer:
         return 2  # Matches Option 2
     else:
         return 0  # Matches neither
 
-def routing_rag(query, topics):
-    # Step 1: Check if the specific model is similar
-    if is_specific_model_similar(query, topics):
+def routingRag(embedModel, client, query, topics):
+    # Step 1: Check if the specific vehicle model is similar
+    if isSpecificModelSimilar(embedModel, query, topics):
         return 1
 
     # Step 2 and 3: Check if the query is related to specific topics
-    topics_option_1 = [
+    topicsOption1 = [
         "General information on Formula 1 vehicles",
         "Vehicle technology and innovations for Formula 1",
         "Formula 1 car models"
     ]
-    topics_option_2 = {
+    topicsOption2 = {
         "Drivers": ["Drivers participate in races.", "Drivers have standings based on their performance.", "Drivers win races in various years.", "Drivers have personal information (number, surname, code, forename, date of birth)."],
         "Races": ["Races are conducted on circuits.", "Races result in wins for drivers.", "Races have name and date."],
         "Circuits": ["Circuits host multiple races.", "Different circuits have different characteristics such as name and location."],
@@ -110,23 +103,4 @@ def routing_rag(query, topics):
     }
 
     # Call the model check function
-    return prompt_model_check(query, topics_option_1, topics_option_2)
-
-# Usage example (to be placed in another .py file):
-if __name__ == "__main__":
-    API_TOKEN = os.getenv("API_TOKEN")
-    TOPICS_PATH = os.getenv("PROCESSED_DATA_PATH")
-
-    initialize_inference_client(API_TOKEN)
-    topics = load_topics(TOPICS_PATH)  # Load topics once at the beginning
-    
-    while True:
-        # Ask the user for a question
-        user_query = input("Please enter your question (or type 'exit' to quit): ")
-        
-        if user_query.lower() == 'exit':
-            print("Exiting the program. Goodbye!")
-            break  # Exit the loop if the user types 'exit'
-        
-        result = routing_rag(user_query, topics)  # Pass the loaded topics
-        print(f"Result: {result}")  # Print the result without terminating the program
+    return promptModelCheck(client, query, topicsOption1, topicsOption2)
