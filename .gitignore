@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,django,react
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python,django,react
 
+Rag System/Knowledge graph/*.csv
+
 ### Django ###
 *.log
 *.pot
@@ -299,3 +301,5 @@ sketch
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,django,react
 *.pkl
+
+*.csv
