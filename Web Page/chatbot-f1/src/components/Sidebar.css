@@ -19,7 +19,7 @@
     padding: 0 20px; /* Padding */
     height: 100%; /* Full height */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
-    border: 2px solid orange;
+    /*border: 2px solid orange;*/
   }
 
   .sidebar-header {
