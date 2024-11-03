@@ -1,23 +1,32 @@
+@font-face {
+  font-family: 'hubotSans'; /* El nombre que usarás en el CSS */
+  src: url('../fonts/Hubot-Sans-Regular.otf') format('opentype'); /* Ruta al archivo .otf */
+  font-weight: normal; /* Peso de la fuente, ajusta según sea necesario */
+  font-style: normal; /* Estilo de la fuente, ajusta según sea necesario */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Permanent+Marker&family=Playwrite+US+Modern:wght@100..400&display=swap');
+
 .message {
     display: flex; /* Use flexbox for alignment */
     align-items: flex-start; /* Align items to the start (top) */
     margin: 10px 0; /* Space between messages */
-    padding: 10px 15px; /* Padding for individual messages */
+    padding: 20px 25px 25px 25px; /* Top Right Bottom Left */
     margin: 18px 0;
     border-radius: 8px; /* Rounded corners */
-    max-width: 60%; /* Limit the maximum width */
+    max-width: 68%; /* Limit the maximum width */
     overflow-wrap: break-word; /* Break long words */
     word-wrap: break-word; /* Ensure long words wrap within the box */
     word-break: break-word; /* Break words if necessary */
   }
   
   .message.user {
-    background-color: #232323; /* Background color for user messages */
+    background-color: #232323bf; /* Background color for user messages */
     margin-left: auto; /* Align user messages to the right */
   }
   
   .message.ai {
-    background-color: #810606c1; /* Background color for AI messages */
+    background-color: #810606a5; /* Background color for AI messages */
     margin-right: auto; /* Align AI messages to the left */
   }
   
@@ -35,6 +44,9 @@
     word-wrap: break-word; /* Ensure long text wraps within the box */
     word-break: break-all; /* Break words to avoid overflow */
     font-size: 20px;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
     color: #cbcbcb;
   }
   

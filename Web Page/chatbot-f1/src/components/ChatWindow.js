@@ -9,7 +9,7 @@ import userLogo from '../items/user.jpg';
 const ChatWindow = ({ messages, onAddMessage }) => {
   const messagesEndRef = useRef(null);
 
-  const addMessage = (text, sender = "ai") => {
+  const addMessage = (text, sender = "user") => {
     const newMessage = { text, sender, avatar: sender === "user" ? userLogo : modelLogo };
     onAddMessage(newMessage); // Use the prop function to add messages
   };

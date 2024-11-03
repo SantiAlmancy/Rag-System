@@ -17,8 +17,6 @@
   }
   
   .input-area {
-    padding: 10px; /* Padding around the input area */
-    border-top: 1px solid #ccc; /* Top border for the input area */
-    background-color: white; /* Background color for input area */
+    border-top: 1px solid #202020; /* Top border for the input area */
   }
   

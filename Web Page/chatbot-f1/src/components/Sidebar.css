@@ -19,6 +19,7 @@
     padding: 0 20px; /* Padding */
     height: 100%; /* Full height */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    border-right: 1px solid #202020;
     /*border: 2px solid orange;*/
   }
 
@@ -26,7 +27,7 @@
     display: flex; /* Usar flexbox para alinear el logo y el texto */
     align-items: center; /* Centrar verticalmente el contenido */
     justify-content: center; /* Centra horizontalmente el contenido */
-    margin: 20px 0 40px -12px;
+    margin: 25px 0 40px -12px;
   }
   
   .sidebar-logo {

@@ -1,25 +1,38 @@
 .input-box {
     display: flex;
-    padding: 10px;
-    background-color: white;
-    border-top: 1px solid #ddd;
+    padding: 42px 200px 42px 200px; /* Top Right Bottom Left */
+    background-color: #171717;
+    /*border: 2px solid cyan; /* Borde opcional */
   }
   
   .input-box input {
     flex: 1;
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 16px 20px 16px 20px; /* Top Right Bottom Left */
+    font-size: 20px;
+    border-radius: 22px;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: #cbcbcb
   }
   
   .input-box button {
     margin-left: 10px;
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    padding: 13px; /* Espaciado interno para mayor tamaño */
+    width: 100px;
+    background-color: #810607; /* Color de fondo (puedes cambiarlo) */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde por defecto */
+    border-radius: 30px; /* Borde circular */
     cursor: pointer;
+    font-family: 'f1Regular'; /* Usa la fuente definida anteriormente */
+    font-size: 16px; /* Tamaño de la fuente */
+    transition: background-color 0.3s, transform 0.2s; /* Animación suave para el hover */
+  }
+  
+  .input-box button:hover {
+    background-color: #cbcbcb; /* Color de fondo al pasar el ratón */
+    color: #171717;
+    transform: scale(1.05); /* Efecto de aumentar el botón al pasar el ratón */
   }
   
