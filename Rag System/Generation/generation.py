@@ -18,8 +18,13 @@ def generateResponseVectorStore(client, context, question):
             "role": "system",
             "content": """Using the information contained in the context,
             give a comprehensive answer to the question.
+
             Respond only to the question asked, response should be concise and relevant to the question.
-            If the answer cannot be deduced from the context, answer with 'I don't know'"""
+            If the answer cannot be deduced from the context, **answer with 'I don't know'**
+            
+            Format the response to flow naturally, as if explaining to someone who is unfamiliar with the technical details of the data.
+            
+            Avoid introductory phrases like "Based on the provided context"."""
         },
         {
             "role": "user",
@@ -50,29 +55,35 @@ def generateResponseVectorStore(client, context, question):
 def generateResponseGraphDB(client, context, question):
     # Define the messages to send to the AI, including instructions and the user's question
     messages = [
-        {
-            "role": "system",
-            "content": """Using the structured information provided in the context JSON,
-            generate a clear and concise answer to the question.
-            
-            Format the response to flow naturally, as if explaining to someone who is unfamiliar with the technical details of the data.
-            Be sure to:
-            - Summarize any relevant entities and their relationships.
-            - Include specific data points from the context in a way that directly supports the answer.
-            - Add context or implications if they enhance understanding, but keep the answer focused and directly relevant to the question.
-            
-            If the answer cannot be deduced from the context, answer with 'I don't know'"""
-        },
-        {
-            "role": "user",
-            "content": f"""Context JSON:
-            {context}
-            ---
-            Now here is the question you need to answer in a clear, natural language format.
+    {
+        "role": "system",
+        "content": """Using the structured information provided in the context JSON,
+        generate a clear and concise answer to the question.
 
-            Question: {question}"""
-        }
-    ]
+        If the 'bindings' array is empty, **respond with 'I don't know'**. 
+        Otherwise, **assume that the information in the 'bindings' array is always the answer to the question posed**.
+
+        Format the response to flow naturally, as if explaining to someone who is unfamiliar with the technical details of the data.
+
+        Avoid introductory phrases like "Based on the provided context" or phrases related with confidence like "Confidence: x%".
+        
+        Be sure to:
+        - Summarize any relevant entities and their relationships.
+        - Include specific data points from the context in a way that directly supports the answer.
+        - Add context or implications if they enhance understanding, but keep the answer focused and directly relevant to the question.
+        """
+    },
+    {
+        "role": "user",
+        "content": f"""Context JSON:
+        {context}
+        ---
+        Now here is the question you need to answer in a clear, natural language format.
+
+        Question: {question}"""
+    }
+]
+
 
     # Send a chat completion request to the model, setting parameters like max tokens and streaming response
     stream = client.chat.completions.create(
@@ -121,8 +132,71 @@ print(generateResponse(client, context ,question, 1))
 '''
 
 client = initializeModelAPI()
-#question = "What are the territorial scopes of the Referendum?"
-question = "What is the capital of France?"
-context = """{'head': {'vars': ['Descripcion_articulo']}, 'results': {'bindings': [{'Descripcion_articulo': {'type': 'literal', 'value': 'The territorial scopes of the Referendum are: National, Departmental and Municipal, depending on the matters of competence of the corresponding level.'}}]}}
+question = "In which races did Hamilton participate and in which years?"
+#question = "What is the capital of France?"
+context = context = """{
+    'head': {'vars': ['Race', 'Year']},
+    'results': {
+        'bindings': [
+            {
+                'Race': {'type': 'literal', 'value': 'Monaco Grand Prix'},
+                'Year': {'type': 'literal', 'value': '2018'},
+            },
+            {
+                'Race': {'type': 'literal', 'value': 'British Grand Prix'},
+                'Year': {'type': 'literal', 'value': '2015'},
+            },
+            {
+                'Race': {'type': 'literal', 'value': 'Hungarian Grand Prix'},
+                'Year': {'type': 'literal', 'value': '2023'},
+            }
+        ]
+    }
+}"""
+print(generateResponse(client, context, question, 2))
+
+question = "What were Hamilton's standings in each race during the 2020 season?"
+context = context = """{
+    "head": {"vars": ["Race", "Position"]},
+    "results": {
+        "bindings": [
+            {
+                "Race": {"type": "literal", "value": "Austrian Grand Prix"},
+                "Position": {"type": "literal", "value": "2"}
+            },
+            {
+                "Race": {"type": "literal", "value": "British Grand Prix"},
+                "Position": {"type": "literal", "value": "1"}
+            },
+            {
+                "Race": {"type": "literal", "value": "Italian Grand Prix"},
+                "Position": {"type": "literal", "value": "7"}
+            }
+        ]
+    }
+}
+"""
+print(generateResponse(client, context, question, 2))
+
+question = "Which drivers finished in the top 3 positions at the Monaco Grand Prix in 2018?"
+context = context = """{
+    "head": {"vars": ["Driver", "Year", "Position"]},
+    "results": {
+        "bindings": [
+            {
+                "Driver": {"type": "literal", "value": "Lewis Hamilton"},
+                "Position": {"type": "literal", "value": "1"}
+            },
+            {
+                "Driver": {"type": "literal", "value": "Sebastian Vettel"},
+                "Position": {"type": "literal", "value": "2"}
+            },
+            {
+                "Driver": {"type": "literal", "value": "Max Verstappen"},
+                "Position": {"type": "literal", "value": "3"}
+            }
+        ]
+    }
+}
 """
 print(generateResponse(client, context, question, 2))
