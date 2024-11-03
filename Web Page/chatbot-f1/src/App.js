@@ -11,13 +11,19 @@ function App() {
     const updatedMessages = [...(messages || []), newMessage]; // Safely handle undefined messages
     setMessages(updatedMessages);
 
-    const currentConversationId = `conversation_${Date.now()}`; // Create a unique ID for saving
-    localStorage.setItem(currentConversationId, JSON.stringify(updatedMessages)); // Store the updated messages
+    //const currentConversationId = `conversation_${Date.now()}`; // Create a unique ID for saving
+    //localStorage.setItem(currentConversationId, JSON.stringify(updatedMessages)); // Store the updated messages
   };
 
   const loadConversation = (conversation) => {
     const loadedMessages = conversation.messages || []; // Load messages or set as empty array if undefined
     setMessages(loadedMessages);
+  };
+
+  // Function to clear all conversations from localStorage
+  const clearConversations = () => {
+    localStorage.clear(); // Removes all items from localStorage
+    setMessages([]); // Optionally clear the current messages in the app
   };
 
   return (

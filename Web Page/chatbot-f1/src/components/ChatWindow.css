@@ -1,12 +1,13 @@
 .chat-window {
-    display: flex;
-    flex-direction: column; /* Stack children vertically */
-    background-color: #f5f5f5; /* Background color */
-    margin-left: 350px; /* Start after the sidebar */
-    height: 100vh; /* Ensure full height */
-    overflow: hidden; /* Prevent overflow issues */
-  }
-  
+  display: flex;
+  flex-direction: column; /* Apilar hijos verticalmente */
+  background-color: #f5f5f5; /* Color de fondo */
+  height: 100%; /* Asegurar altura completa */
+  overflow: hidden; /* Prevenir problemas de desbordamiento */
+  border: 2px solid cyan; /* Borde opcional */
+  flex: 1; /* Permitir que ocupe el resto del espacio */
+}
+
   .messages-container {
     flex: 1; /* Take up all available space */
     display: flex;

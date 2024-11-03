@@ -1,29 +1,96 @@
 /* src/Sidebar.css */
+@font-face {
+  font-family: 'f1Regular'; /* El nombre que usarás en el CSS */
+  src: url('../fonts/Formula1-Regular.otf') format('opentype'); /* Ruta al archivo .otf */
+  font-weight: normal; /* Peso de la fuente, ajusta según sea necesario */
+  font-style: normal; /* Estilo de la fuente, ajusta según sea necesario */
+}
+
+@font-face {
+  font-family: 'f1Bold'; /* El nombre que usarás en el CSS */
+  src: url('../fonts/Formula1-Bold.otf') format('opentype'); /* Ruta al archivo .otf */
+  font-weight: normal; /* Peso de la fuente, ajusta según sea necesario */
+  font-style: normal; /* Estilo de la fuente, ajusta según sea necesario */
+}
+
 .sidebar {
-    width: 250px; /* Set a width for the sidebar */
-    background-color: #f5f5f5; /* Background color */
-    padding: 20px; /* Padding */
-    height: 100vh; /* Full height */
+    width: 380px; /* Set a width for the sidebar */
+    background-color: #171717; /* Background color */
+    padding: 0 20px; /* Padding */
+    height: 100%; /* Full height */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
-    position: fixed; /* Fixed position */
+    border: 2px solid orange;
+  }
+
+  .sidebar-header {
+    display: flex; /* Usar flexbox para alinear el logo y el texto */
+    align-items: center; /* Centrar verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    margin: 20px 0 40px -12px;
   }
   
-  .new-conversation {
-    margin-bottom: 20px; /* Space below the button */
-  }
+  .sidebar-logo {
+    width: 160px; /* Ajusta el ancho de la imagen */
+    height: auto; /* Mantiene la proporción de la imagen */
+    margin-right: 13px; /* Espacio a la derecha del logo */
+  }  
   
-  .conversation-list {
-    list-style-type: none; /* Remove bullet points */
-    padding: 0; /* Remove padding */
+  .sidebar-text {
+    margin-left: 13px;
+    font-family: 'f1Regular'; /* Usa el nombre definido en @font-face */
+    font-style: normal;
+    font-size: 30px;  
+    color: #cbcbcb;
   }
-  
-  .conversation-list li {
-    cursor: pointer; /* Pointer cursor for clickable items */
-    padding: 10px; /* Padding for list items */
-    border-bottom: 1px solid #ccc; /* Divider */
-  }
-  
-  .conversation-list li:hover {
-    background-color: #e0e0e0; /* Highlight on hover */
-  }
+
+  .sidebar-body {
+  display: flex; /* Habilitar Flexbox */
+  flex-direction: column; /* Colocar elementos en columna */
+}
+
+.sidebar-conversation {
+  font-family: 'f1Bold';
+  font-style: normal;
+  font-size: 25px;  
+  color: #cbcbcb;
+  padding-left: 10px;
+  margin-bottom: 30px; /* Espaciado entre el título y el botón */
+}
+
+.new-conversation-button {
+  margin: 0 auto; /* Centra horizontalmente */
+  padding: 13px; /* Espaciado interno para mayor tamaño */
+  width: 340px;
+  background-color: #810607; /* Color de fondo (puedes cambiarlo) */
+  color: white; /* Color del texto */
+  border: none; /* Sin borde por defecto */
+  border-radius: 30px; /* Borde circular */
+  cursor: pointer; /* Cambia el cursor al pasar el ratón */
+  font-family: 'f1Regular'; /* Usa la fuente definida anteriormente */
+  font-size: 16px; /* Tamaño de la fuente */
+  transition: background-color 0.3s, transform 0.2s; /* Animación suave para el hover */
+}
+
+.new-conversation-button:hover {
+  background-color: #cbcbcb; /* Color de fondo al pasar el ratón */
+  color: #171717;
+  transform: scale(1.05); /* Efecto de aumentar el botón al pasar el ratón */
+}
+
+.conversation-list {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove padding */
+}
+
+.conversation-item {
+  cursor: pointer; /* Pointer cursor for clickable items */
+  padding: 10px; /* Padding for list items */
+  border-bottom: 1px solid #ccc; /* Divider */
+  margin-bottom: 5px; /* Espaciado entre los elementos de la lista */
+}
+
+.conversation-item:hover {
+  background-color: #e0e0e0; /* Highlight on hover */
+}
+
   

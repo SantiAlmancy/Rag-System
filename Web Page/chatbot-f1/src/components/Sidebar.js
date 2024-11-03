@@ -1,5 +1,6 @@
 // Sidebar.js
 import React, { useState, useEffect } from 'react';
+import logo from '../items/logo1.png';
 import './Sidebar.css';
 
 const Sidebar = ({ onSelectConversation, onNewConversation }) => {
@@ -27,20 +28,30 @@ const Sidebar = ({ onSelectConversation, onNewConversation }) => {
 
   return (
     <div className="sidebar">
-      <h2>Conversations</h2>
-      <button className="new-conversation-button" onClick={handleNewConversation}>
-        New Conversation
-      </button>
-      <div className="conversation-list">
-        {conversations.map((conversation) => (
-          <div 
-            key={conversation.id} 
-            className="conversation-item" 
-            onClick={() => onSelectConversation(conversation)}
-          >
-            {conversation.id.replace('conversation_', 'Conversation ')}
-          </div>
-        ))}
+      <div className="sidebar-header">
+        <img 
+          src={logo}
+          alt="Logo"
+          className="sidebar-logo"
+        />
+        <span className="sidebar-text">Chatbot</span>
+      </div>
+      <div className="sidebar-body">
+        <span className="sidebar-conversation">Conversations</span>
+        <button className="new-conversation-button" onClick={handleNewConversation}>
+          New Conversation
+        </button>
+        <div className="conversation-list">
+          {conversations.map((conversation) => (
+            <div 
+              key={conversation.id} 
+              className="conversation-item" 
+              onClick={() => onSelectConversation(conversation)}
+            >
+              {conversation.id.replace('conversation_', 'Conversation ')}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
