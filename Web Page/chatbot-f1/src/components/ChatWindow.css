@@ -1,7 +1,7 @@
 .chat-window {
   display: flex;
   flex-direction: column; /* Apilar hijos verticalmente */
-  background: linear-gradient(to bottom left,#9b2a30 ,#171717);
+  background: linear-gradient(to bottom left,#501518 ,#171717);
   height: 100%; /* Asegurar altura completa */
   overflow: hidden; /* Prevenir problemas de desbordamiento */
   /*border: 2px solid cyan; /* Borde opcional */

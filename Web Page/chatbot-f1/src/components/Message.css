@@ -5,19 +5,19 @@
     padding: 10px 15px; /* Padding for individual messages */
     margin: 18px 0;
     border-radius: 8px; /* Rounded corners */
-    max-width: 55%; /* Limit the maximum width */
+    max-width: 60%; /* Limit the maximum width */
     overflow-wrap: break-word; /* Break long words */
     word-wrap: break-word; /* Ensure long words wrap within the box */
     word-break: break-word; /* Break words if necessary */
   }
   
   .message.user {
-    background-color: #2424247d; /* Background color for user messages */
+    background-color: #232323; /* Background color for user messages */
     margin-left: auto; /* Align user messages to the right */
   }
   
   .message.ai {
-    background-color: #81060665; /* Background color for AI messages */
+    background-color: #810606c1; /* Background color for AI messages */
     margin-right: auto; /* Align AI messages to the left */
   }
   
