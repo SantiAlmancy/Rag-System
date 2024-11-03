@@ -2,15 +2,6 @@ from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
 import os
 
-def initializeModelAPI():
-    # Load environment variables
-    load_dotenv()
-    apiToken = os.getenv("API_TOKEN")
-
-    # Initialize the client for Hugging Face Inference API with a specific API key
-    client = InferenceClient(api_key=apiToken)
-    return client
-
 def generateResponseVectorStore(client, context, question):
     # Define the messages to send to the AI, including instructions and the user's question
     messages = [
@@ -107,7 +98,6 @@ def generateResponse(client, context, question, pathNumber):
     elif pathNumber == 2:
         response = generateResponseGraphDB(client, context, question)
     return response
-
 
 # Example of usage
 # Define the question to be rephrased
