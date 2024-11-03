@@ -25,8 +25,7 @@ def create_rdf_graph():
     for _, row in drivers.iterrows():
         driver_uri = F1[f"driver/{row['driverRef']}"]
         g.add((driver_uri, RDF.type, F1.Driver))
-        g.add((driver_uri, FOAF.givenName, Literal(row['forename'])))
-        g.add((driver_uri, FOAF.familyName, Literal(row['surname'])))
+        g.add((driver_uri, F1.name, Literal(row['surname'])))
 
     # Add races
     for _, row in races.iterrows():
@@ -46,7 +45,6 @@ def create_rdf_graph():
         
         g.add((standing_uri, F1.hasDriver, driver_uri))
         g.add((standing_uri, F1.hasRace, race_uri))
-        g.add((standing_uri, F1.points, Literal(row['points'])))
         g.add((standing_uri, F1.position, Literal(row['position'])))
 
     return g

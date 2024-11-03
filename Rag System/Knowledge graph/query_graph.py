@@ -17,66 +17,64 @@ class F1QuerySystem:
 
     def _initializeSPARQLWrapper(self):
         """Initialize the SPARQL wrapper for GraphDB"""
-        sparql = SPARQLWrapper("http://127.0.0.1:7200/repositories/F1")
+        sparql = SPARQLWrapper("http://127.0.0.1:7200/repositories/F1A")
         sparql.setReturnFormat(JSON)
         return sparql
 
     def generateSPARQLQuery(self, question):
         """Generate SPARQL query from natural language question"""
-        prompt = f"""You are a specialized SPARQL query generator for a Formula 1 knowledge graph. Your task is to generate ONLY a valid SPARQL query, without any additional text or explanations.
+        prompt = f"""You are a specialized SPARQL query generator for a Formula 1 knowledge graph. Generate ONLY a valid SPARQL query without any additional text, comments, or explanations.
 
-        KNOWLEDGE GRAPH STRUCTURE:
-        1. Driver Entity:
-        - URI: <http://example.org/f1/driver/[name]>
-        - Required Properties:
-            * foaf:givenName (string)
-            * foaf:familyName (string)
+        SCHEMA DEFINITION:
+        1. Driver
+        - URI Pattern: <http://example.org/f1/driver/[name]>
+        - Properties:
+            * f1:name (string)
 
-        2. Race Entity:
-        - URI: <http://example.org/f1/race/[id]>
-        - Required Properties:
+        2. Race
+        - URI Pattern: <http://example.org/f1/race/[id]>
+        - Properties:
             * f1:year (integer)
             * schema1:name (string)
-        - Note: [id] is independent of the race year
 
-        3. Standing Entity:
-        - URI: <http://example.org/f1/standing/[id]>
-        - Required Properties:
-            * f1:hasDriver (links to Driver URI)
-            * f1:hasRace (links to Race URI)
-            * f1:points (decimal)
+        3. Standing
+        - URI Pattern: <http://example.org/f1/standing/[id]>
+        - Properties:
+            * f1:hasDriver → Driver
+            * f1:hasRace → Race
             * f1:position (integer)
 
-        IMPORTANT RULES:
-        1. Always include these prefixes:
+        REQUIRED PREFIXES:
         PREFIX f1: <http://example.org/f1/>
-        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-        PREFIX schema1: <http://schema.org/>
-        2. Use correct property paths (e.g., ?standing f1:hasDriver ?driver)
-        3. Match variable names with their content (e.g., ?givenName for foaf:givenName)
-        4. Include necessary FILTER clauses for numerical comparisons
-        5. Use proper nesting for complex queries
-        6. Return only the SPARQL query, no explanations
-
-        REFERENCE QUERY EXAMPLE:
-        PREFIX f1: <http://example.org/f1/>
-        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
         PREFIX schema1: <http://schema.org/>
 
-        SELECT ?givenName ?familyName ?position
+        QUERY GENERATION GUIDELINES:
+        1. **Prefixes**: Include ALL required prefixes at the beginning of the query.
+        2. **Variable Relationships**: Follow property paths exactly as in the schema, ensuring proper connections between entities.
+        3. **Variable Naming**: Use variable names that match their property (e.g., `?Name` for `f1:name`).
+        4. **SELECT Clause Alignment**: Ensure `SELECT` variables are only those used in the `WHERE` clause.
+        5. **Schema Adherence**: Structure all relationships according to the schema definitions above.
+        6. **Filter Conditions**: Apply any specific constraints from the question as `FILTER` conditions within the `WHERE` clause.
+        7. **Output Requirements**: Generate ONLY the SPARQL query without any explanations, comments, or additional text.
+
+        REFERENCE QUERY:
+        PREFIX f1: <http://example.org/f1/>
+        PREFIX schema1: <http://schema.org/>
+
+        SELECT ?name ?raceName ?year ?position
         WHERE {{
-        ?standing f1:hasRace ?race ;
-                    f1:hasDriver ?driver ;
+            ?standing f1:hasDriver ?driver ;
+                    f1:hasRace ?race ;
                     f1:position ?position .
-        ?race f1:year 2024 .
-        ?driver foaf:givenName ?givenName ;
-                foaf:familyName ?familyName .
-        FILTER(?position <= 3)
+
+            ?driver a f1:Driver ;
+                    f1:name ?name .
+
+            ?race schema1:name ?raceName ;
+                f1:year ?year .
         }}
 
-        QUESTION TO ANSWER: "{question}"
-
-        SPARQL Query:"""
+        QUERY FOR: "{question}" """
         try:
             response = self.client.text_generation(
                 prompt,
