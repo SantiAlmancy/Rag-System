@@ -23,32 +23,60 @@ class F1QuerySystem:
 
     def generateSPARQLQuery(self, question):
         """Generate SPARQL query from natural language question"""
-        prompt = f"""You are a SPARQL query generator for a Formula 1 knowledge graph. The graph has the following structure:
+        prompt = f"""You are a specialized SPARQL query generator for a Formula 1 knowledge graph. Your task is to generate ONLY a valid SPARQL query, without any additional text or explanations.
 
-Circuits:
+        KNOWLEDGE GRAPH STRUCTURE:
+        1. Driver Entity:
+        - URI: <http://example.org/f1/driver/[name]>
+        - Required Properties:
+            * foaf:givenName (string)
+            * foaf:familyName (string)
 
-URI pattern: <http://example.org/f1/circuit/[name]>
-Properties: schema1:country, schema1:latitude, schema1:longitude, schema1:location, schema1:name
-Races:
+        2. Race Entity:
+        - URI: <http://example.org/f1/race/[id]>
+        - Required Properties:
+            * f1:year (integer)
+            * schema1:name (string)
+        - Note: [id] is independent of the race year
 
-URI pattern: <http://example.org/f1/race/[id]>
-Properties: f1:hasCircuit, f1:round, f1:year, schema1:date, schema1:name
-Drivers:
+        3. Standing Entity:
+        - URI: <http://example.org/f1/standing/[id]>
+        - Required Properties:
+            * f1:hasDriver (links to Driver URI)
+            * f1:hasRace (links to Race URI)
+            * f1:points (decimal)
+            * f1:position (integer)
 
-URI pattern: <http://example.org/f1/driver/[name]>
-Properties: f1:code, f1:number, schema1:birthDate, schema1:nationality, foaf:familyName, foaf:givenName
-Standings:
+        IMPORTANT RULES:
+        1. Always include these prefixes:
+        PREFIX f1: <http://example.org/f1/>
+        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+        PREFIX schema1: <http://schema.org/>
+        2. Use correct property paths (e.g., ?standing f1:hasDriver ?driver)
+        3. Match variable names with their content (e.g., ?givenName for foaf:givenName)
+        4. Include necessary FILTER clauses for numerical comparisons
+        5. Use proper nesting for complex queries
+        6. Return only the SPARQL query, no explanations
 
-URI pattern: <http://example.org/f1/standing/[id]>
-Properties: f1:hasDriver, f1:hasRace, f1:points, f1:position, f1:wins
-Given this question: "{question}"
-Generate a SPARQL query that would answer this question using the knowledge graph structure above.
+        REFERENCE QUERY EXAMPLE:
+        PREFIX f1: <http://example.org/f1/>
+        PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+        PREFIX schema1: <http://schema.org/>
 
-***Include only the SPARQL query in your response, with appropriate prefixes.***
+        SELECT ?givenName ?familyName ?position
+        WHERE {{
+        ?standing f1:hasRace ?race ;
+                    f1:hasDriver ?driver ;
+                    f1:position ?position .
+        ?race f1:year 2024 .
+        ?driver foaf:givenName ?givenName ;
+                foaf:familyName ?familyName .
+        FILTER(?position <= 3)
+        }}
 
-****EXCLUDE any explanation or any other type of text***
-SPARQL Query:
-"""
+        QUESTION TO ANSWER: "{question}"
+
+        SPARQL Query:"""
         try:
             response = self.client.text_generation(
                 prompt,
@@ -80,7 +108,9 @@ SPARQL Query:
         try:
             query = self.generateSPARQLQuery(question)
             print("\nGenerated SPARQL Query:")
+            print(query)
             query = self.clean_sparql_response(query)
+            print("\nCleaned Query:")
             print(query)
             print("\nExecuting query...")
             
@@ -99,8 +129,8 @@ SPARQL Query:
             lines = lines[1:]
         
         # Remove last line if it's a code block marker or GPT end token
-        if lines[-1].strip().endswith('</s>') or lines[-1].startswith('```'):
-            lines = lines[:-1]
+        if lines[-1].strip().endswith('</s>'):
+            lines[-1] = lines[-1].replace('</s>', '').strip()
 
         if lines[-1].startswith('```'):
             lines = lines[:-1]
