@@ -1,7 +1,7 @@
 .input-box {
     display: flex;
     padding: 42px 200px 42px 200px; /* Top Right Bottom Left */
-    background-color: #171717;
+    background-color: #17171700;
     /*border: 2px solid cyan; /* Borde opcional */
   }
   

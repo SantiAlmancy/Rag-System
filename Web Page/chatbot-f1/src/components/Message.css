@@ -13,7 +13,7 @@
     margin: 10px 0; /* Space between messages */
     padding: 20px 25px 25px 25px; /* Top Right Bottom Left */
     margin: 18px 0;
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 16px; /* Rounded corners */
     max-width: 68%; /* Limit the maximum width */
     overflow-wrap: break-word; /* Break long words */
     word-wrap: break-word; /* Ensure long words wrap within the box */

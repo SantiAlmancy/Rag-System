@@ -52,7 +52,7 @@
 .sidebar-conversation {
   font-family: 'f1Bold';
   font-style: normal;
-  font-size: 25px;  
+  font-size: 24px;  
   color: #cbcbcb;
   padding-left: 10px;
   margin-bottom: 30px; /* Espaciado entre el título y el botón */
@@ -68,7 +68,7 @@
   border-radius: 30px; /* Borde circular */
   cursor: pointer; /* Cambia el cursor al pasar el ratón */
   font-family: 'f1Regular'; /* Usa la fuente definida anteriormente */
-  font-size: 16px; /* Tamaño de la fuente */
+  font-size: 18px; /* Tamaño de la fuente */
   transition: background-color 0.3s, transform 0.2s; /* Animación suave para el hover */
 }
 
