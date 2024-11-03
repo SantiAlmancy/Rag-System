@@ -1,0 +1,37 @@
+.message {
+    display: flex; /* Use flexbox for alignment */
+    align-items: flex-start; /* Align items to the start (top) */
+    margin: 10px 0; /* Space between messages */
+    padding: 10px 15px; /* Padding for individual messages */
+    border-radius: 8px; /* Rounded corners */
+    max-width: 70%; /* Limit the maximum width */
+    overflow-wrap: break-word; /* Break long words */
+    word-wrap: break-word; /* Ensure long words wrap within the box */
+    word-break: break-word; /* Break words if necessary */
+  }
+  
+  .message.user {
+    background-color: #e22929; /* Background color for user messages */
+    margin-left: auto; /* Align user messages to the right */
+  }
+  
+  .message.ai {
+    background-color: #0ee40e; /* Background color for AI messages */
+    margin-right: auto; /* Align AI messages to the left */
+  }
+  
+  .avatar {
+    width: 40px; /* Set a fixed width for the avatar */
+    height: 40px; /* Set a fixed height for the avatar */
+    border-radius: 50%; /* Make it circular */
+    margin-right: 10px; /* Space between avatar and message text */
+    object-fit: cover; /* Ensure the image maintains aspect ratio */
+  }
+  
+  .message-text {
+    max-width: 100%; /* Allow text to take full width of the message */
+    overflow-wrap: break-word; /* Ensure long text wraps within the box */
+    word-wrap: break-word; /* Ensure long text wraps within the box */
+    word-break: break-all; /* Break words to avoid overflow */
+  }
+  

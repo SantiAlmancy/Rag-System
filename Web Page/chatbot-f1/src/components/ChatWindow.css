@@ -1,0 +1,23 @@
+.chat-window {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    background-color: #f5f5f5; /* Background color */
+    margin-left: 350px; /* Start after the sidebar */
+    height: 100vh; /* Ensure full height */
+    overflow: hidden; /* Prevent overflow issues */
+  }
+  
+  .messages-container {
+    flex: 1; /* Take up all available space */
+    display: flex;
+    flex-direction: column; /* Standard order for messages */
+    overflow-y: auto; /* Enable vertical scrolling for messages */
+    padding: 20px; /* Padding for messages */
+  }
+  
+  .input-area {
+    padding: 10px; /* Padding around the input area */
+    border-top: 1px solid #ccc; /* Top border for the input area */
+    background-color: white; /* Background color for input area */
+  }
+  

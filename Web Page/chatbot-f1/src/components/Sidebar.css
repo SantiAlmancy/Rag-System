@@ -1,0 +1,29 @@
+/* src/Sidebar.css */
+.sidebar {
+    width: 250px; /* Set a width for the sidebar */
+    background-color: #f5f5f5; /* Background color */
+    padding: 20px; /* Padding */
+    height: 100vh; /* Full height */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    position: fixed; /* Fixed position */
+  }
+  
+  .new-conversation {
+    margin-bottom: 20px; /* Space below the button */
+  }
+  
+  .conversation-list {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+  }
+  
+  .conversation-list li {
+    cursor: pointer; /* Pointer cursor for clickable items */
+    padding: 10px; /* Padding for list items */
+    border-bottom: 1px solid #ccc; /* Divider */
+  }
+  
+  .conversation-list li:hover {
+    background-color: #e0e0e0; /* Highlight on hover */
+  }
+  
