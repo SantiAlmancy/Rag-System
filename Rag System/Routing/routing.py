@@ -92,6 +92,7 @@ def routingRag(embedModel, client, query, topics):
     ]
     topicsOption2 = [
         "Formula 1 (F1) Drivers",
+        "Formula 1 (F1) Participations"
         "Formula 1 (F1) Races",
         "Formula 1 (F1) Positions",
         "Formula 1 (F1) Wins"

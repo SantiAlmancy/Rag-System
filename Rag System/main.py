@@ -1,6 +1,6 @@
 import os
 import pickle
-import io
+import io  # Importar io para manejar el flujo de bytes
 from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
 from langchain.embeddings import HuggingFaceEmbeddings
@@ -75,7 +75,7 @@ def generateAnswer(question, embedModel, client, embedTopics):
         answer = generateResponse(client, retrievedDocsText, question, mostCommonRoute)
         print(answer)
 
-    elif (mostCommonRoute == 2):
+    elif (mostCommonRoute == 2 or routingRag(embedModel, client, question, embedTopics) == 2):
         json = query_f1_knowledge_graph(question)
         answer = generateResponse(client, json, question, mostCommonRoute)
         print(json)
@@ -86,7 +86,7 @@ def generateAnswer(question, embedModel, client, embedTopics):
 
     return answer
 
-if __name__ == "__main__":
+if __name__ == "_main_":
     load_dotenv()
     embedModel = HuggingFaceEmbeddings(model_name="hkunlp/instructor-base")
     client = initializeModelAPI()    

@@ -53,7 +53,7 @@ def generateResponseGraphDB(client, context, question):
 
         Format the response to flow naturally, as if explaining to someone who is unfamiliar with the technical details of the data.
 
-        Avoid introductory phrases like "Based on the provided context" or phrases related with confidence like "Confidence: x%".
+        **Avoid introductory phrases such as “Based on the context provided,” confidence-related phrases such as “Confidence: x%” or empty responses.**
         
         Be sure to:
         - Summarize any relevant entities and their relationships.
