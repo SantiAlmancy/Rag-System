@@ -5,7 +5,7 @@ import pickle
 def getEmbedding(embedModel, text):
     return embedModel.embed_query(text)
 
-def isSpecificModelSimilar(embedModel, query, topics, threshold=0.75, fuzzThreshold=75):
+def isSpecificModelSimilar(embedModel, query, topics, threshold=0.70, fuzzThreshold=70):
     # Generate embedding for the query once
     queryEmbedding = getEmbedding(embedModel, query)
 
@@ -31,22 +31,22 @@ def promptModelCheck(client, query, topics1, topics2, modelName="mistralai/Mistr
 
             When analyzing a question, follow these steps for each word in the question:
 
-            1. *Categorize the Question*: Identify if it falls under one of the following categories:
-            - *Drivers*: Names of Formula 1 drivers or related terms.
-            - *Races*: Names of races, Grand Prix events, or race positions.
-            - *Technology/Vehicle*: Terms related to Formula 1 cars, technology, innovations, or car parts.
+            1. **Categorize the Question**: Identify if it falls under one of the following categories:
+            - **Drivers**: Names of Formula 1 drivers or related terms.
+            - **Races**: Names of races, Grand Prix events, or race positions.
+            - **Technology/Vehicle**: Terms related to Formula 1 cars, technology, innovations, or car parts.
 
-            2. *Determine Relevance*: Based on your analysis, assess whether the question relates to one of the following options or any related topics:
-            - *Option 1*: Topics related to Formula 1 Technology/Vehicle.
-            - *Option 2*: Topics related to Formula 1 Drivers and/or Races.
+            2. **Determine Relevance**: Based on your analysis, assess whether the question relates to one of the following options or any related topics:
+            - **Option 1**: Topics related to Formula 1 Technology/Vehicle.
+            - **Option 2**: Topics related to Formula 1 Drivers and/or Races.
 
-            *Topics for consideration*:
-            - *Option 1 Topics*: {", ".join(topics1)}
-            - *Option 2 Topics*: {", ".join(topics2)}
+            **Topics for consideration**:
+            - **Option 1 Topics**: {", ".join(topics1)}
+            - **Option 2 Topics**: {", ".join(topics2)}
 
-            3. *Evaluate Relatedness*: Determine if the identified topics in the question are at least somewhat related to the topics in the provided options. If they are, assign the question to either Option 1 or Option 2 accordingly.
+            3. **Evaluate Relatedness**: Determine if the identified topics in the question are at least somewhat related to the topics in the provided options. If they are, assign the question to either Option 1 or Option 2 accordingly.
 
-            4. *Synonym Analysis*: Analyze the question for synonyms that may relate closely to the relevant topics. If they do, assign the question to either Option 1 or Option 2 accordingly.
+            4. **Synonym Analysis**: Analyze the question for synonyms that may relate closely to the relevant topics. If they do, assign the question to either Option 1 or Option 2 accordingly.
 
             Respond with:
             - "1" if the question pertains to Option 1 topics, similar topics to Option 1, or synonyms related to Option 1 topics.
