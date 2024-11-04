@@ -2,6 +2,13 @@ import os
 import pandas as pd
 from rdflib import Graph, Literal, RDF, URIRef, Namespace
 from rdflib.namespace import FOAF, XSD
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+CSV_DRIVERS = os.getenv("CSV_DRIVERS")
+CSV_STANDINGS = os.getenv("CSV_STANDINGS")
+CSV_RACES = os.getenv("CSV_RACES")
 
 # Create namespaces for our data
 F1 = Namespace("http://example.org/f1/")
@@ -9,9 +16,9 @@ SCHEMA = Namespace("http://schema.org/")
 
 def create_rdf_graph():
     # Load the CSV files
-    drivers = pd.read_csv(r'C:\Users\Ale\UPB\8vo Semestre\Topicos IA\Rag-System\Rag System\Knowledge graph\drivers.csv')
-    driver_standings = pd.read_csv(r'C:\Users\Ale\UPB\8vo Semestre\Topicos IA\Rag-System\Rag System\Knowledge graph\driver_standings.csv')
-    races = pd.read_csv(r'C:\Users\Ale\UPB\8vo Semestre\Topicos IA\Rag-System\Rag System\Knowledge graph\races.csv')
+    drivers = pd.read_csv(CSV_DRIVERS)
+    driver_standings = pd.read_csv(CSV_STANDINGS)
+    races = pd.read_csv(CSV_RACES)
 
     # Create RDF graph
     g = Graph()
