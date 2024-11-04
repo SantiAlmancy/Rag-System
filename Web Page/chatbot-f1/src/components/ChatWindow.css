@@ -8,15 +8,20 @@
   flex: 1; /* Permitir que ocupe el resto del espacio */
 }
 
-  .messages-container {
-    flex: 1; /* Take up all available space */
-    display: flex;
-    flex-direction: column; /* Standard order for messages */
-    overflow-y: auto; /* Enable vertical scrolling for messages */
-    padding: 100px 220px 20px 220px; /* top, right, bottom, left */
-  }
-  
-  .input-area {
-    border-top: 1px solid #202020; /* Top border for the input area */
-  }
-  
+.messages-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 100px 220px 20px 220px;
+}
+
+/* Chrome, Safari y navegadores basados en Webkit */
+.messages-container::-webkit-scrollbar {
+  width: 10px; /* Ancho de la barra de desplazamiento */
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.063); /* Color tenue para el indicador del scroll */
+  border-radius: 4px; /* Bordes redondeados */
+}

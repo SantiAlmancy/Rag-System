@@ -11,7 +11,7 @@ const ChatWindow = ({ messages, onAddMessage }) => {
 
   const addMessage = (text, sender = "user") => {
     const newMessage = { text, sender, avatar: sender === "user" ? userLogo : modelLogo };
-    onAddMessage(newMessage); // Use the prop function to add messages
+    onAddMessage(newMessage);
   };
 
   const scrollToBottom = () => {

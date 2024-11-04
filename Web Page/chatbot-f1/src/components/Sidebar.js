@@ -1,30 +1,9 @@
 // Sidebar.js
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import logo from '../items/logo1.png';
 import './Sidebar.css';
 
-const Sidebar = ({ onSelectConversation, onNewConversation }) => {
-  const [conversations, setConversations] = useState([]);
-
-  // Load conversations from localStorage when the component mounts
-  useEffect(() => {
-    const storedConversations = [];
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key.startsWith('conversation_')) {
-        const conversation = JSON.parse(localStorage.getItem(key));
-        storedConversations.push({ id: key, messages: conversation });
-      }
-    }
-    setConversations(storedConversations);
-  }, []);
-
-  const handleNewConversation = () => {
-    const newConversation = { id: `conversation_${Date.now()}`, messages: [] };
-    localStorage.setItem(newConversation.id, JSON.stringify(newConversation.messages)); // Store in localStorage
-    setConversations((prev) => [...prev, newConversation]);
-    onNewConversation(newConversation); // Trigger the new conversation in the ChatWindow
-  };
+const Sidebar = ({ conversations, onSelectConversation, onNewConversation, onClearConversations }) => {
 
   return (
     <div className="sidebar">
@@ -38,8 +17,11 @@ const Sidebar = ({ onSelectConversation, onNewConversation }) => {
       </div>
       <div className="sidebar-body">
         <span className="sidebar-conversation">Conversations</span>
-        <button className="new-conversation-button" onClick={handleNewConversation}>
+        <button className="sidebar-button" onClick={onNewConversation}>
           New Conversation
+        </button>
+        <button className="sidebar-button" onClick={onClearConversations}>
+          Clear Conversations
         </button>
         <div className="conversation-list">
           {conversations.map((conversation) => (

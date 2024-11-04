@@ -58,7 +58,7 @@
   margin-bottom: 30px; /* Espaciado entre el título y el botón */
 }
 
-.new-conversation-button {
+.sidebar-button {
   margin: 0 auto; /* Centra horizontalmente */
   padding: 13px; /* Espaciado interno para mayor tamaño */
   width: 340px;
@@ -70,9 +70,10 @@
   font-family: 'f1Regular'; /* Usa la fuente definida anteriormente */
   font-size: 18px; /* Tamaño de la fuente */
   transition: background-color 0.3s, transform 0.2s; /* Animación suave para el hover */
+  margin-bottom: 20px;
 }
 
-.new-conversation-button:hover {
+.sidebar-button:hover {
   background-color: #cbcbcb; /* Color de fondo al pasar el ratón */
   color: #171717;
   transform: scale(1.05); /* Efecto de aumentar el botón al pasar el ratón */
@@ -80,18 +81,32 @@
 
 .conversation-list {
   list-style-type: none; /* Remove bullet points */
-  padding: 0; /* Remove padding */
+  padding: 0 20px;
+  max-height: 480px; /* Ajusta esta altura según tus necesidades */
+  overflow-y: auto; /* Habilitar scroll vertical */
+}
+
+/* Chrome, Safari y navegadores basados en Webkit */
+.conversation-list::-webkit-scrollbar {
+  width: 10px; /* Ancho de la barra de desplazamiento */
+}
+
+.conversation-list::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.063); /* Color tenue para el indicador del scroll */
+  border-radius: 4px; /* Bordes redondeados */
 }
 
 .conversation-item {
+  color: #cbcbcb;
+  font-size: 16px;
+  font-family: 'f1Regular';
+  font-style: normal;
   cursor: pointer; /* Pointer cursor for clickable items */
-  padding: 10px; /* Padding for list items */
-  border-bottom: 1px solid #ccc; /* Divider */
+  padding: 16px 10px 16px 10px; /* Superior, Derecho, Inferior, Izquierdo */
+  border-bottom: 1px solid #cccccc1e; /* Divider */
   margin-bottom: 5px; /* Espaciado entre los elementos de la lista */
 }
 
 .conversation-item:hover {
-  background-color: #e0e0e0; /* Highlight on hover */
+  background-color: #e0e0e015; /* Highlight on hover */
 }
-
-  
