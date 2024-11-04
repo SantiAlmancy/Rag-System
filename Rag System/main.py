@@ -1,4 +1,6 @@
 import os
+import pickle
+import io  # Importar io para manejar el flujo de bytes
 from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
 from langchain.embeddings import HuggingFaceEmbeddings
@@ -6,17 +8,21 @@ from Routing.routing import *
 from QueryConstruction.qcVectorStore import *
 from KnowledgeGraph.query_graph import *
 from Generation.generation import *
+import torch
+
+class CPU_Unpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module == 'torch.storage' and name == '_load_from_bytes':
+            return lambda b: torch.load(io.BytesIO(b), map_location='cpu')
+        else:
+            return super().find_class(module, name)
 
 def initializeModelAPI():
-    # Load environment variables
     load_dotenv()
     apiToken = os.getenv("API_TOKEN")
-
-    # Initialize the client for Hugging Face Inference API with a specific API key
     client = InferenceClient(api_key=apiToken)
     return client
 
-# Load embeddings from the .pkl file
 def loadEmbeddings(embeddingsPath):
     with open(embeddingsPath, "rb") as file:
         return pickle.load(file)
@@ -24,12 +30,11 @@ def loadEmbeddings(embeddingsPath):
 def loadRetriever():
     RETRIEVER_PATH = os.getenv("RETRIEVER_PATH")
     with open(RETRIEVER_PATH, "rb") as f:
-        return pickle.load(f)
+        return CPU_Unpickler(f).load()  # Usar CPU_Unpickler en lugar de pickle.load
     
 def generateUniqueDocs(docs):
-    # Remove duplicate documents and returns a list of unique documents.
     uniqueDocs = []
-    seenDocs = set()  # Use a set to track seen documents
+    seenDocs = set()
 
     for doc in docs:
         if doc.page_content not in seenDocs:
@@ -39,74 +44,58 @@ def generateUniqueDocs(docs):
     return uniqueDocs
 
 def docsToString(docs):
-    # Converts the list of documents into a single string.
     docsText = ""
     for doc in docs:
         docsText += f"Retrieved Document:\nText: {doc.page_content}\n\n"
     return docsText
 
 def generateAnswer(question, embedModel, client, embedTopics):
-    # Step 1: Generate question variations
     questionVariations = generateQuestionVariations(client, question)
     
-    # Step 2: Route the question
     routingResults = []
     for variation in questionVariations:
         result = routingRag(embedModel, client, variation, embedTopics)
         routingResults.append(result)
         print(f"Variation: '{variation}' -> Route: {result}")
 
-    # Determine the most common route
     mostCommonRoute = max(set(routingResults), key=routingResults.count)
     answer = ""
-    # Vector store case
+    
     if (mostCommonRoute == 1):
-        # Retrieval and processing
         retriever = loadRetriever()
         allDocs = []
 
-        # Retrieve documents for each question variation
         for variation in questionVariations:
             docs = retriever.get_relevant_documents(variation)
-            allDocs.extend(docs)  # Add retrieved documents to the total list
+            allDocs.extend(docs)
 
-        # Remove duplicate documents
         uniqueDocs = generateUniqueDocs(allDocs)
-
-        # Convert unique documents to a string format
         retrievedDocsText = docsToString(uniqueDocs)
-
-        # Print the text of the unique documents
         print(retrievedDocsText)
-        answer = generateResponse(client, retrievedDocsText ,question, mostCommonRoute)
+        answer = generateResponse(client, retrievedDocsText, question, mostCommonRoute)
         print(answer)
 
-    if (mostCommonRoute == 2):
+    elif (mostCommonRoute == 2):
         answer = query_f1_knowledge_graph(question)
-        print (answer)
+        print(answer)
 
     else:
-        answer = "The information you are looking for can not be found on this RAG System. Sorry :("
+        answer = "The information you are looking for cannot be found on this RAG System. Sorry :("
 
     return answer
 
 if __name__ == "__main__":
-    # Load environment variables
     load_dotenv()
-
-    # Initialize
     embedModel = HuggingFaceEmbeddings(model_name="hkunlp/instructor-base")
     client = initializeModelAPI()    
     embeddingsTopics = os.getenv("EMBEDDINGS_TOPICS")
     embedTopics = loadEmbeddings(embeddingsTopics)
     
     while True:
-        # Ask the user for a question
         userQuery = input("Please enter your question (or type 'exit' to quit): ")
         
         if userQuery.lower() == 'exit':
             print("Exiting the program. Goodbye!")
-            break  # Exit the loop if the user types 'exit'
+            break
         
-        # Use the new function to generate the answer
-        result = generateAnswer(userQuery, embedModel, client, embedTopics)  # Pass the loaded topics
+        result = generateAnswer(userQuery, embedModel, client, embedTopics)
