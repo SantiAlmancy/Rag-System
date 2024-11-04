@@ -5,7 +5,7 @@ import pickle
 def getEmbedding(embedModel, text):
     return embedModel.embed_query(text)
 
-def isSpecificModelSimilar(embedModel, query, topics, threshold=0.8, fuzzThreshold=95):
+def isSpecificModelSimilar(embedModel, query, topics, threshold=0.75, fuzzThreshold=75):
     # Generate embedding for the query once
     queryEmbedding = getEmbedding(embedModel, query)
 
@@ -21,29 +21,36 @@ def isSpecificModelSimilar(embedModel, query, topics, threshold=0.8, fuzzThresho
 
     return False  # No relevant match found
 
-def promptModelCheck(client, query, topics1, topics2, modelName="mistralai/Mixtral-8x7B-Instruct-v0.1"):
+def promptModelCheck(client, query, topics1, topics2, modelName="mistralai/Mistral-7B-Instruct-v0.3"):
     # Create a message to check if the question relates to the specified topics
     messages = [
         {
             "role": "user",
             "content": f"""
-            You are an AI designed to determine if a Formula 1 (F1) data source has enough information to answer questions about F1 topics. 
-            You understand the context of F1, including drivers, circuits, teams, and race events from 1950 and onwards, and the information such as names and details.
+            You are a Formula 1 (F1) expert tasked with determining whether a given data source contains sufficient information to answer questions about F1 topics. You possess extensive knowledge of drivers, teams, races, and Formula 1 cars from 1950 onward.
 
-            When analyzing the question, remember that:
-            1. **Drivers** are key participants in F1 and their details (e.g., wins, personal information) are important.
-            2. **Races** provide context about events and results, including specific wins and statistics.
-            3. **Circuits** are venues where races occur and can influence results.
-            4. **Technology** are innovations from F1 teams to improve their vehicles, includes vehicle component, mechanism and form improvements.
-            5. Your understanding of these aspects should guide your assessment. 
-            6. For each word in the question, determine if it pertains to a driver, race, circuit, or technology. If a relevant term is identified, analyze it in relation to the associated topics.
-            Evaluate whether the question relates to the following options:
-            - **Option 1**: {topics1} (Data source only from 2000 and onwards, discard if it includes any other year)
-            - **Option 2**: {topics2} (Data source only from 1950 and onwards, discard if it includes any other year)
+            When analyzing a question, follow these steps for each word in the question:
 
-            Please respond with:
-            - "1" if the question relates to Option 1,
-            - "2" if it relates to Option 2, or
+            1. **Categorize the Question**: Identify if it falls under one of the following categories:
+            - **Drivers**: Names of Formula 1 drivers or related terms.
+            - **Races**: Names of races, Grand Prix events, or race positions.
+            - **Technology/Vehicle**: Terms related to Formula 1 cars, technology, innovations, or car parts.
+
+            2. **Determine Relevance**: Based on your analysis, assess whether the question relates to one of the following options or any related topics:
+            - **Option 1**: Topics related to Formula 1 Technology/Vehicle.
+            - **Option 2**: Topics related to Formula 1 Drivers and/or Races.
+
+            **Topics for consideration**:
+            - **Option 1 Topics**: {", ".join(topics1)}
+            - **Option 2 Topics**: {", ".join(topics2)}
+
+            3. **Evaluate Relatedness**: Determine if the identified topics in the question are at least somewhat related to the topics in the provided options. If they are, assign the question to either Option 1 or Option 2 accordingly.
+
+            4. **Synonym Analysis**: Analyze the question for synonyms that may relate closely to the relevant topics. If they do, assign the question to either Option 1 or Option 2 accordingly.
+
+            Respond with:
+            - "1" if the question pertains to Option 1 topics, similar topics to Option 1, or synonyms related to Option 1 topics.
+            - "2" if the question pertains to Option 2 topics, similar topics to Option 2, or synonyms related to Option 2 topics.
             - "no" if neither applies.
 
             **Question**: "{query}"
@@ -77,16 +84,19 @@ def routingRag(embedModel, client, query, topics):
 
     # Step 2 and 3: Check if the query is related to specific topics
     topicsOption1 = [
-        "General information on Formula 1 vehicles",
-        "Vehicle technology and innovations for Formula 1",
-        "Formula 1 car models"
+        "Formula 1 (F1) cars",
+        "Formula 1 (F1) vehicles"
+        "Formula 1 (F1) technology",
+        "Formula 1 (F1) innovations",
+        "Formula 1 (F1) curiosities",
     ]
-    topicsOption2 = {
-        "Drivers": ["Drivers participate in races.", "Drivers have standings based on their performance.", "Drivers win races in various years.", "Drivers have personal information (number, surname, code, forename, date of birth)."],
-        "Races": ["Races are conducted on circuits.", "Races result in wins for drivers.", "Races have name and date."],
-        "Circuits": ["Circuits host multiple races.", "Different circuits have different characteristics such as name and location."],
-        "Standings": ["Each driver has a standing for a race.", "A race is won by a driver."]
-    }
+    topicsOption2 = [
+        "Formula 1 (F1) Drivers",
+        "Formula 1 (F1) Races",
+        "Formula 1 (F1) Positions",
+        "Formula 1 (F1) Wins"
+        "Formula 1 (F1) Grand Prix",
+    ]
 
     # Call the model check function
     return promptModelCheck(client, query, topicsOption1, topicsOption2)
