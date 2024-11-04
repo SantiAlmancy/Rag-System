@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 from langchain.embeddings import HuggingFaceEmbeddings
 from Routing.routing import *
 from QueryConstruction.qcVectorStore import *
+from KnowledgeGraph.query_graph import *
 from Generation.generation import *
-from sentence_transformers import util
 
 def initializeModelAPI():
     # Load environment variables
@@ -58,7 +58,7 @@ def generateAnswer(question, embedModel, client, embedTopics):
 
     # Determine the most common route
     mostCommonRoute = max(set(routingResults), key=routingResults.count)
-    answer = "";
+    answer = ""
     # Vector store case
     if (mostCommonRoute == 1):
         # Retrieval and processing
@@ -80,6 +80,14 @@ def generateAnswer(question, embedModel, client, embedTopics):
         print(retrievedDocsText)
         answer = generateResponse(client, retrievedDocsText ,question, mostCommonRoute)
         print(answer)
+
+    if (mostCommonRoute == 2):
+        answer = query_f1_knowledge_graph(question)
+        print (answer)
+
+    else:
+        answer = "The information you are looking for can not be found on this RAG System. Sorry :("
+
     return answer
 
 if __name__ == "__main__":
