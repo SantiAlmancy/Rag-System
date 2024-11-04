@@ -2,6 +2,7 @@
 from rdflib import Graph, Namespace
 from rdflib.namespace import FOAF
 import os
+from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
