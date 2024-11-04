@@ -2,8 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python,django,react
 
 Rag System/Knowledge graph/*.csv
-
-### Django ###
+Rag System/Knowledge graph/knowledge_graphs/*
 *.log
 *.pot
 *.pyc
