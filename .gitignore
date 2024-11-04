@@ -3,6 +3,7 @@
 
 Rag System/Knowledge graph/*.csv
 Rag System/Knowledge graph/knowledge_graphs/*
+### Django ###
 *.log
 *.pot
 *.pyc
