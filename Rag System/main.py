@@ -16,6 +16,11 @@ def initializeModelAPI():
     client = InferenceClient(api_key=apiToken)
     return client
 
+# Load embeddings from the .pkl file
+def loadEmbeddings(embeddingsPath):
+    with open(embeddingsPath, "rb") as file:
+        return pickle.load(file)
+    
 def loadRetriever():
     RETRIEVER_PATH = os.getenv("RETRIEVER_PATH")
     with open(RETRIEVER_PATH, "rb") as f:
@@ -53,7 +58,7 @@ def generateAnswer(question, embedModel, client, embedTopics):
 
     # Determine the most common route
     mostCommonRoute = max(set(routingResults), key=routingResults.count)
-
+    answer = "";
     # Vector store case
     if (mostCommonRoute == 1):
         # Retrieval and processing
@@ -73,7 +78,9 @@ def generateAnswer(question, embedModel, client, embedTopics):
 
         # Print the text of the unique documents
         print(retrievedDocsText)
-        print(generateResponse(client, retrievedDocsText ,question, mostCommonRoute))
+        answer = generateResponse(client, retrievedDocsText ,question, mostCommonRoute)
+        print(answer)
+    return answer
 
 if __name__ == "__main__":
     # Load environment variables

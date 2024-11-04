@@ -1,11 +1,6 @@
 from scipy.spatial.distance import cosine
 from fuzzywuzzy import fuzz
 import pickle
-
-# Load embeddings from the .pkl file
-def loadEmbeddings(embeddingsPath):
-    with open(embeddingsPath, "rb") as file:
-        return pickle.load(file)
     
 def getEmbedding(embedModel, text):
     return embedModel.embed_query(text)
