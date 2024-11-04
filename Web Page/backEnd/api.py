@@ -36,7 +36,7 @@ load_dotenv()
 embedModel = HuggingFaceEmbeddings(model_name="hkunlp/instructor-base")
 client = initializeModelAPI()
 embeddingsTopics = os.getenv("EMBEDDINGS_TOPICS")
-embedTopics = loadEmbeddings(r"C:\Users\LENOVO LOQ\UPB\Semestre II-2024\Tópicos Selectos en Inteligencia Artificial\ProyectoFInal\Rag-System\Rag System\embeddedTopics.pkl")
+embedTopics = loadEmbeddings(embeddingsTopics)
 
 # Define el modelo de solicitud
 class QuestionRequest(BaseModel):
