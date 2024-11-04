@@ -5,25 +5,25 @@ from pydantic import BaseModel
 from langchain.embeddings import HuggingFaceEmbeddings
 from dotenv import load_dotenv
 
-# Ajustar el path al directorio "Rag system"
+# Adjust the path to the "Rag system" directory
 rag_system_path = os.path.abspath(os.path.join(__file__, '../../../Rag system'))
 sys.path.insert(0, rag_system_path)
 
 from main import generateAnswer, initializeModelAPI, loadEmbeddings
 
-# Inicializar FastAPI
+# Initialize FastAPI
 app = FastAPI()
 
-# Cargar variables de entorno
+# Load environment variables
 load_dotenv()
 
-# Inicializar modelo y cliente
+# Initialize model and client
 embedModel = HuggingFaceEmbeddings(model_name="hkunlp/instructor-base")
 client = initializeModelAPI()    
 embeddingsTopics = os.getenv("EMBEDDINGS_TOPICS")
 embedTopics = loadEmbeddings(embeddingsTopics)
 
-# Definir el modelo de solicitud
+# Define the request model
 class QuestionRequest(BaseModel):
     question: str
     text: str
@@ -35,13 +35,12 @@ async def generate_answer(request: QuestionRequest):
     print(type(question)) 
 
     try:
-        # Asegúrate de que generateAnswer sea asíncrona si puede llevar tiempo
         result = generateAnswer(question, embedModel, client, embedTopics) 
         return {"answer": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating answer: {e}")
 
-# Mensaje de bienvenida
+# Welcome message
 @app.get("/")
 async def root():
     return {"message": "Welcome to the Answer Generation API"}
