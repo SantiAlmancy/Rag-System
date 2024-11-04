@@ -1,4 +1,3 @@
-// App.js
 import React, { useState, useEffect } from 'react';
 import ChatWindow from './components/ChatWindow';
 import Sidebar from './components/Sidebar';
@@ -10,7 +9,6 @@ function App() {
   const [conversations, setConversations] = useState([]);
 
   useEffect(() => {
-    // Cargar conversaciones desde localStorage al iniciar
     const loadedConversations = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
@@ -23,25 +21,31 @@ function App() {
   }, []);
 
   const addMessageToCurrentConversation = (newMessage) => {
-    const updatedMessages = [...messages, newMessage];
-    setMessages(updatedMessages);
+    setMessages((prevMessages) => {
+      const updatedMessages = [...prevMessages, newMessage];
 
-    if (!currentConversationId) {
-      const newConversationId = `conversation_${Date.now()}`;
-      setCurrentConversationId(newConversationId);
-      const newConversation = { id: newConversationId, messages: updatedMessages };
-      setConversations(prevConversations => [...prevConversations, newConversation]);
-      localStorage.setItem(newConversationId, JSON.stringify(updatedMessages));
-    } else {
-      localStorage.setItem(currentConversationId, JSON.stringify(updatedMessages));
-      setConversations(prevConversations =>
-        prevConversations.map(conversation =>
-          conversation.id === currentConversationId
-            ? { ...conversation, messages: updatedMessages }
-            : conversation
-        )
-      );
-    }
+      if (!currentConversationId) {
+        const newConversationId = `conversation_${Date.now()}`;
+        setCurrentConversationId(newConversationId);
+        const newConversation = { id: newConversationId, messages: updatedMessages };
+        
+        setConversations((prevConversations) => [...prevConversations, newConversation]);
+        
+        localStorage.setItem(newConversationId, JSON.stringify(updatedMessages));
+      } else {
+        localStorage.setItem(currentConversationId, JSON.stringify(updatedMessages));
+
+        setConversations((prevConversations) =>
+          prevConversations.map((conversation) =>
+            conversation.id === currentConversationId
+              ? { ...conversation, messages: updatedMessages }
+              : conversation
+          )
+        );
+      }
+
+      return updatedMessages;
+    });
   };
 
   const loadConversation = (conversation) => {
@@ -54,7 +58,8 @@ function App() {
     setMessages([]);
     setCurrentConversationId(newConversationId);
     const newConversation = { id: newConversationId, messages: [] };
-    setConversations(prevConversations => [...prevConversations, newConversation]);
+    
+    setConversations((prevConversations) => [...prevConversations, newConversation]);
     localStorage.setItem(newConversationId, JSON.stringify([]));
   };
 
@@ -71,7 +76,7 @@ function App() {
         conversations={conversations}
         onSelectConversation={loadConversation} 
         onNewConversation={handleNewConversation} 
-        onClearConversations={clearAllConversations} // Pasamos el método de limpiar al Sidebar
+        onClearConversations={clearAllConversations}
       />
       <ChatWindow messages={messages} onAddMessage={addMessageToCurrentConversation} />
     </div>

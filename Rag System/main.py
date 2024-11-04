@@ -1,6 +1,6 @@
 import os
 import pickle
-import io  # Importar io para manejar el flujo de bytes
+import io
 from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
 from langchain.embeddings import HuggingFaceEmbeddings
@@ -30,7 +30,7 @@ def loadEmbeddings(embeddingsPath):
 def loadRetriever():
     RETRIEVER_PATH = os.getenv("RETRIEVER_PATH")
     with open(RETRIEVER_PATH, "rb") as f:
-        return CPU_Unpickler(f).load()  # Usar CPU_Unpickler en lugar de pickle.load
+        return CPU_Unpickler(f).load()
     
 def generateUniqueDocs(docs):
     uniqueDocs = []
@@ -76,7 +76,9 @@ def generateAnswer(question, embedModel, client, embedTopics):
         print(answer)
 
     elif (mostCommonRoute == 2):
-        answer = query_f1_knowledge_graph(question)
+        json = query_f1_knowledge_graph(question)
+        answer = generateResponse(client, json, question, mostCommonRoute)
+        print(json)
         print(answer)
 
     else:
@@ -89,6 +91,7 @@ if __name__ == "__main__":
     embedModel = HuggingFaceEmbeddings(model_name="hkunlp/instructor-base")
     client = initializeModelAPI()    
     embeddingsTopics = os.getenv("EMBEDDINGS_TOPICS")
+    print(embeddingsTopics)
     embedTopics = loadEmbeddings(embeddingsTopics)
     
     while True:
