@@ -5,7 +5,7 @@ import pickle
 def getEmbedding(embedModel, text):
     return embedModel.embed_query(text)
 
-def isSpecificModelSimilar(embedModel, query, topics, threshold=0.80, fuzzThreshold=75):
+def isSpecificModelSimilar(embedModel, query, topics, threshold=0.70, fuzzThreshold=70):
     # Generate embedding for the query once
     queryEmbedding = getEmbedding(embedModel, query)
 
