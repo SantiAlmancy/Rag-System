@@ -1,9 +1,12 @@
 # debug_graph.py
 from rdflib import Graph, Namespace
 from rdflib.namespace import FOAF
+import os
 
+# Load environment variables
+load_dotenv()
+G_path = os.getenv("GRAPH_PATH")
 
-G_path = r"C:\Users\Ale\UPB\8vo Semestre\Topicos IA\Rag-System\Rag System\Knowledge graph\knowledge_graphs\f1_graph.ttl"
 def debug_graph(file_path=G_path):
     g = Graph()
     g.parse(file_path, format="turtle")
