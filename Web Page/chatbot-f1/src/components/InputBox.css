@@ -1,13 +1,12 @@
 .input-box {
     display: flex;
-    padding: 42px 200px 42px 200px; /* Top Right Bottom Left */
+    padding: 42px 200px 42px 200px;
     background-color: #17171700;
-    /*border: 2px solid cyan; /* Borde opcional */
   }
   
   .input-box input {
     flex: 1;
-    padding: 16px 20px 16px 20px; /* Top Right Bottom Left */
+    padding: 16px 20px 16px 20px;
     font-size: 20px;
     border-radius: 22px;
     font-family: "Lato", sans-serif;
@@ -18,21 +17,21 @@
   
   .input-box button {
     margin-left: 10px;
-    padding: 13px; /* Espaciado interno para mayor tamaño */
+    padding: 13px;
     width: 100px;
-    background-color: #810607; /* Color de fondo (puedes cambiarlo) */
-    color: white; /* Color del texto */
-    border: none; /* Sin borde por defecto */
-    border-radius: 30px; /* Borde circular */
+    background-color: #810607;
+    color: white;
+    border: none;
+    border-radius: 30px;
     cursor: pointer;
-    font-family: 'f1Regular'; /* Usa la fuente definida anteriormente */
-    font-size: 16px; /* Tamaño de la fuente */
-    transition: background-color 0.3s, transform 0.2s; /* Animación suave para el hover */
+    font-family: 'f1Regular';
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
   }
   
   .input-box button:hover {
-    background-color: #cbcbcb; /* Color de fondo al pasar el ratón */
+    background-color: #cbcbcb;
     color: #171717;
-    transform: scale(1.05); /* Efecto de aumentar el botón al pasar el ratón */
+    transform: scale(1.05);
   }
   

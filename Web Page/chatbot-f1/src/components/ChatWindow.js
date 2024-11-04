@@ -1,4 +1,3 @@
-// ChatWindow.js
 import React, { useEffect, useRef } from 'react';
 import Message from './Message';
 import InputBox from './InputBox';
@@ -28,7 +27,7 @@ const ChatWindow = ({ messages, onAddMessage }) => {
         {messages.map((msg, index) => (
           <Message key={index} text={msg.text} sender={msg.sender} avatar={msg.avatar} />
         ))}
-        <div ref={messagesEndRef} /> {/* Empty div to scroll to */}
+        <div ref={messagesEndRef} /> {}
       </div>
       <div className="input-area">
         <InputBox onSend={addMessage} />

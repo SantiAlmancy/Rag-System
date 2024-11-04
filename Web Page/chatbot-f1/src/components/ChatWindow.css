@@ -1,11 +1,10 @@
 .chat-window {
   display: flex;
-  flex-direction: column; /* Apilar hijos verticalmente */
+  flex-direction: column;
   background: linear-gradient(to bottom left,#501518 ,#171717);
-  height: 100%; /* Asegurar altura completa */
-  overflow: hidden; /* Prevenir problemas de desbordamiento */
-  /*border: 2px solid cyan; /* Borde opcional */
-  flex: 1; /* Permitir que ocupe el resto del espacio */
+  height: 100%;
+  overflow: hidden;
+  flex: 1;
 }
 
 .messages-container {
@@ -16,12 +15,11 @@
   padding: 100px 220px 20px 220px;
 }
 
-/* Chrome, Safari y navegadores basados en Webkit */
 .messages-container::-webkit-scrollbar {
-  width: 10px; /* Ancho de la barra de desplazamiento */
+  width: 10px;
 }
 
 .messages-container::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.063); /* Color tenue para el indicador del scroll */
-  border-radius: 4px; /* Bordes redondeados */
+  background-color: rgba(255, 255, 255, 0.063);
+  border-radius: 4px;
 }

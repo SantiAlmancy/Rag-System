@@ -10,8 +10,8 @@ const InputBox = ({ onSend }) => {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter' && inputValue.trim() !== '') {
-      onSend(inputValue); // Send the message
-      setInputValue(''); // Clear the input field
+      onSend(inputValue);
+      setInputValue('');
     }
   };
 
@@ -28,7 +28,7 @@ const InputBox = ({ onSend }) => {
         type="text"
         value={inputValue}
         onChange={handleInputChange}
-        onKeyPress={handleKeyPress} // Add the key press handler
+        onKeyPress={handleKeyPress}
         placeholder="Type your message..."
       />
       <button onClick={handleSendClick}>Send</button>
