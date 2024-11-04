@@ -1,0 +1,109 @@
+@font-face {
+  font-family: 'f1Regular';
+  src: url('../fonts/Formula1-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'f1Bold';
+  src: url('../fonts/Formula1-Bold.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.sidebar {
+    width: 380px;
+    background-color: #171717;
+    padding: 0 20px;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-right: 1px solid #202020;
+  }
+
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 25px 0 40px -12px;
+  }
+  
+  .sidebar-logo {
+    width: 160px;
+    height: auto;
+    margin-right: 13px;
+  }  
+  
+  .sidebar-text {
+    margin-left: 13px;
+    font-family: 'f1Regular';
+    font-style: normal;
+    font-size: 30px;  
+    color: #cbcbcb;
+  }
+
+  .sidebar-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-conversation {
+  font-family: 'f1Bold';
+  font-style: normal;
+  font-size: 24px;  
+  color: #cbcbcb;
+  padding-left: 10px;
+  margin-bottom: 30px;
+}
+
+.sidebar-button {
+  margin: 0 auto;
+  padding: 13px;
+  width: 340px;
+  background-color: #810607;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: 'f1Regular';
+  font-size: 18px;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-bottom: 20px;
+}
+
+.sidebar-button:hover {
+  background-color: #cbcbcb;
+  color: #171717;
+  transform: scale(1.05);
+}
+
+.conversation-list {
+  list-style-type: none;
+  padding: 0 20px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.conversation-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.conversation-list::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.063);
+  border-radius: 4px;
+}
+
+.conversation-item {
+  color: #cbcbcb;
+  font-size: 16px;
+  font-family: 'f1Regular';
+  font-style: normal;
+  cursor: pointer;
+  padding: 16px 10px 16px 10px;
+  border-bottom: 1px solid #cccccc1e;
+  margin-bottom: 5px;
+}
+
+.conversation-item:hover {
+  background-color: #e0e0e015;
+}

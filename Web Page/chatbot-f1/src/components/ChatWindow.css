@@ -1,0 +1,25 @@
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(to bottom left,#501518 ,#171717);
+  height: 100%;
+  overflow: hidden;
+  flex: 1;
+}
+
+.messages-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 100px 220px 20px 220px;
+}
+
+.messages-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.063);
+  border-radius: 4px;
+}

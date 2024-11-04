@@ -1,0 +1,52 @@
+@font-face {
+  font-family: 'hubotSans';
+  src: url('../fonts/Hubot-Sans-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Permanent+Marker&family=Playwrite+US+Modern:wght@100..400&display=swap');
+
+.message {
+    display: flex;
+    align-items: flex-start;
+    margin: 10px 0;
+    padding: 20px 25px 25px 25px;
+    margin: 18px 0;
+    border-radius: 16px;
+    max-width: 68%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+  
+  .message.user {
+    background-color: #232323bf;
+    margin-left: auto;
+  }
+  
+  .message.ai {
+    background-color: #810606a5;
+    margin-right: auto;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+  }
+  
+  .message-text {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-size: 20px;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #cbcbcb;
+  }
+  

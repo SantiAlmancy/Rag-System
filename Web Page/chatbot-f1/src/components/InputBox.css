@@ -1,0 +1,37 @@
+.input-box {
+    display: flex;
+    padding: 42px 200px 42px 200px;
+    background-color: #17171700;
+  }
+  
+  .input-box input {
+    flex: 1;
+    padding: 16px 20px 16px 20px;
+    font-size: 20px;
+    border-radius: 22px;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: #cbcbcb
+  }
+  
+  .input-box button {
+    margin-left: 10px;
+    padding: 13px;
+    width: 100px;
+    background-color: #810607;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'f1Regular';
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .input-box button:hover {
+    background-color: #cbcbcb;
+    color: #171717;
+    transform: scale(1.05);
+  }
+  
