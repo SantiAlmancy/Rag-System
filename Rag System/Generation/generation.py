@@ -7,33 +7,29 @@ def generateResponseVectorStore(client, context, question):
     messages = [
         {
             "role": "system",
-            "content": """Using the information contained in the context,
-            give a comprehensive answer to the question.
+            "content": """You are an expert in Formula 1 data analysis. Using the information contained in the context, provide a clear and concise answer to the question.
 
-            Respond only to the question asked, response should be concise and relevant to the question.
-            If the answer cannot be deduced from the context, **answer with 'I don't know'**
-            
-            Format the response to flow naturally, as if explaining to someone who is unfamiliar with the technical details of the data.
-            
-            Avoid introductory phrases like "Based on the provided context"."""
+            Respond directly to the question asked. If the answer cannot be derived from the context, respond with a predefined message: 
+            'I am unable to provide a concise answer. I apologize for any inconvenience.' 
+
+            Ensure your response is direct and to the point. """
         },
         {
             "role": "user",
             "content": f"""Context:
             {context}
             ---
-            Now here is the question you need to answer.
+            Provide a precise answer to the question, omitting any introductory phrases or referencing the context:
 
             Question: {question}"""
         }
     ]
 
-    # Send a chat completion request to the model, setting parameters like max tokens and streaming response
+    # Chat completion request to the model, setting parameters like max tokens and streaming response
     stream = client.chat.completions.create(
-        # Specify the model to use; this line can be adjusted to test different models
         model="mistralai/Mixtral-8x7B-Instruct-v0.1", 
         messages=messages, 
-        max_tokens=500,
+        max_tokens=700,
         stream=True
     )
 
@@ -48,10 +44,11 @@ def generateResponseGraphDB(client, context, question):
     messages = [
     {
         "role": "system",
-        "content": """Using the structured information provided in the context JSON,
-        generate a clear and concise answer to the question.
+        "content": """You are an expert in data analysis and expert in Formula 1 data analysis. Using the structured information from the context JSON, provide a clear and concise answer to the question.
 
-        If the 'bindings' array is empty, **respond with 'I don't know'**. 
+        If the 'bindings' array is empty, respond with a predefined message:
+        'I am unable to provide a concise answer. I apologize for any inconvenience.'
+
         Otherwise, **assume that the information in the 'bindings' array is always the answer to the question posed**.
 
         Format the response to flow naturally, as if explaining to someone who is unfamiliar with the technical details of the data.
@@ -69,7 +66,7 @@ def generateResponseGraphDB(client, context, question):
         "content": f"""Context JSON:
         {context}
         ---
-        Now here is the question you need to answer in a clear, natural language format.
+        Provide a precise answer to the question in a clear, natural language format, omitting any introductory phrases or referencing the context:
 
         Question: {question}"""
     }
@@ -81,7 +78,7 @@ def generateResponseGraphDB(client, context, question):
         # Specify the model to use; this line can be adjusted to test different models
         model="mistralai/Mixtral-8x7B-Instruct-v0.1", 
         messages=messages, 
-        max_tokens=500,
+        max_tokens=700,
         stream=True
     )
 
