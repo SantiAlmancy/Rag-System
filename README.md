@@ -3,6 +3,8 @@
 
 This project is a Retrieval-Augmented Generation (RAG) system focused on Formula 1 topics. It utilizes a **Vector Store** and a **Knowledge Graph** to answer users' natural language questions about drivers, technology, vehicles, and historical F1 data. The integration allows for quick access to accurate information based on stored documents and semantic queries.
 
+![WhatsApp Image 2025-07-10 at 10 36 30](https://github.com/user-attachments/assets/2ea53f55-f1bc-4b04-b522-d4a6922e4070)
+
 ## Objective 🏆
 
 To provide F1 fans and analysts with a tool that enables detailed and contextualized answers about the sport, using a combination of vector searches and a knowledge graph.
